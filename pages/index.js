@@ -17,7 +17,7 @@ const game = [
 function allUnchecked(col) {
   console.log(game[col])
   game[col]
-  //  .filter((item) => (item.Status ?? Status.Unchecked) == Status.Pre)
+    //  .filter((item) => (item.Status ?? Status.Unchecked) == Status.Pre)
     .forEach((item) => {
       console.log(item);
       item.status = Status.Unchecked;
@@ -26,9 +26,7 @@ function allUnchecked(col) {
     });
 }
 
-function AnotherCol(col) {
-  return col == 0 ? 1 : 0;
-}
+const AnotherCol = (col) => col == 0 ? 1 : 0;
 
 function IdChecked(col) {
   return game[col].filter((item) => item.status == Status.Pre)[0].id;
@@ -40,7 +38,7 @@ function AnyChecked(col) {
 
 function check(e) {
   //console.log(e.target.id)
- // e.target.classList.remove("bg-light");
+  // e.target.classList.remove("bg-light");
 
   const col = e.target.id.split("_")[0].split("c")[1];
   const id = e.target.id.split("_")[1];
@@ -74,13 +72,13 @@ function check(e) {
     e.target.classList.add("bg-light");
     game[col].filter((item) => item.id == id)[0].status = Status.Unchecked;
   }
-
-  //game[col].filter((item) => item.id == id)[0].status = "X";
-
-  // e.target.classList.add("bg-warning");
-
-  //console.log(game);
 }
+
+function WordElement(props) {
+  const id = `c${props.col}_${props.item.id}`
+  return (<div id={id} onClick={e => check(e)} className="p-3 bg-light border">{props.item.word}</div>);
+}
+
 
 function Game(props) {
   return (
@@ -88,18 +86,12 @@ function Game(props) {
       <div className="row gx-5" key={"container2"}>
         <div className="d-grid gap-3 col" key={"c1"}>
           {game[0].map((item) =>
-            <div id={"c0_" + item.id}
-              key={"c0_" + item.id}
-              onClick={(e) => check(e)}
-              className="p-3 bg-light border jsc1">{item.word}</div>
+            <WordElement key={`c1_${item.id}`} item={item} col={0} />
           )}
         </div>
         <div className="d-grid gap-3 col" key={"c2"}>
           {game[1].map((item) =>
-            <div id={"c1_" + item.id}
-              key={"c0_" + item.id}
-              onClick={(e) => check(e)}
-              className="p-3 bg-light border jsc2">{item.word}</div>
+            <WordElement key={`c1_${item.id}`} item={item} col={1} />
           )}
         </div>
       </div>
