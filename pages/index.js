@@ -1,5 +1,5 @@
 function Welcome() {
-  return <h1 className="text-center">Bienvenido</h1>;
+  return <h1 className="text-center">Bienvenido.</h1>;
 }
 
 const Status = {
