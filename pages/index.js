@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Welcome() {
   return <h1 className="text-center">Bienvenido</h1>;
 }
@@ -74,10 +76,61 @@ function check(e) {
   }
 }
 
-function WordElement(props) {
-  const id = `c${props.col}_${props.item.id}`
-  return (<div id={id} onClick={e => check(e)} className="p-3 bg-light border">{props.item.word}</div>);
+// function WordElement(props) {
+//   const id = `c${props.col}_${props.item.id}`
+//   return (<div id={id} onClick={e => check(e)} className="p-3 bg-light border">{props.item.word}</div>);
+// }
+
+class WordElement extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: Status.Unchecked,
+    };
+  }
+
+  handleClick() {
+    if(this.state==Status.Unchecked){
+      this.setState({status: Status.Pre});
+      this.classList.remove("bg-light");
+      this.classList.add("bg-warning");
+    }
+    else if(this.state==Status.Pre){
+      this.setState({status: Status.Unchecked});
+      this.classList.remove("bg-warning");
+      this.classList.add("bg-light");
+    }
+    console.log(this.state);
+  }
+
+  render() {
+    const id = `c${this.props.col}_${this.props.item.id}`
+    return (
+      <div id={id} onClick={e => this.handleClick()} className="p-3 bg-light border">{this.props.item.word}</div>
+    );
+  }
 }
+
+/*
+
+class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
+
+  render() {
+    return (
+      <button className="square" onClick={() => console.log('click')}>
+        {this.props.value}
+      </button>
+    );
+  }
+}
+
+*/
 
 
 function Game(props) {
