@@ -30,19 +30,35 @@ class WordElement extends React.Component {
     }
 
     handleClick() {
-        if (this.state.status == Status.Unchecked) {
-            this.setState({ status: Status.Pre });
+        switch (this.state.status) {
+            case Status.Unchecked:
+                // logica de juego
+                this.setState({ status: Status.Pre });
+                break;
+            case Status.Pre:
+                // logica de desmarcado
+                this.setState({ status: Status.Unchecked });
+                break;
         }
-        else if (this.state.status == Status.Pre) {
-            this.setState({ status: Status.Unchecked });
-        }
+
         this.props.onClick()
     }
 
     render() {
-        let clazz = "p-3 bg-light border";
-        if (this.state.status == Status.Pre) {
-            clazz = "p-3 bg-warning border";
+        let clazz = "";
+        switch (this.state.status) {
+            case Status.Unchecked:
+                clazz = "p-3 bg-light border";
+                break;
+            case Status.Pre:
+                clazz = "p-3 bg-warning border";
+                break;
+            case Status.Ok:
+                clazz = "p-3 bg-success border";
+                break;
+            case Status.Ko:
+                clazz = "p-3 bg-danger border";
+                break;
         }
         return (<>
             <div className={clazz} onClick={() => this.handleClick()}>
