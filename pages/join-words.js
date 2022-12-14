@@ -67,7 +67,7 @@ class Game extends React.Component {
     }
 
     handleClick(col, id) {
-        const status = this.state.status.slice();
+        const status = structuredClone(this.state.status);
         status[col].filter((ele)=>ele.id==id)[0].status = Status.Pre;
         this.setState({ status: status });
     }
