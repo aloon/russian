@@ -29,12 +29,12 @@ class WordElement extends React.Component {
         };
     }
 
-    handleClick(){
-        if(this.state.status==Status.Unchecked){
-            this.setState({status: Status.Pre});
+    handleClick() {
+        if (this.state.status == Status.Unchecked) {
+            this.setState({ status: Status.Pre });
         }
-        else if(this.state.status==Status.Pre){
-            this.setState({status: Status.Unchecked});
+        else if (this.state.status == Status.Pre) {
+            this.setState({ status: Status.Unchecked });
         }
         this.props.onClick()
     }
@@ -56,13 +56,19 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: game.map((e) => e.map((e) => Status.Unchecked))
+            status: game.map((e) => e.map((e2) => {
+                return {
+                    id: e2.id,
+                    status: Status.Unchecked
+                };
+            }
+            ))
         };
     }
 
     handleClick(col, id) {
         const status = this.state.status.slice();
-        status[col][id] = Status.Pre;
+        status[col].filter((ele)=>ele.id==id)[0].status = Status.Pre;
         this.setState({ status: status });
     }
 
