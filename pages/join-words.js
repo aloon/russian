@@ -82,9 +82,9 @@ class Game extends React.Component {
         };
     }
 
-    handleClick(col, id) {
+    handleClick(col, item) {
         const status = structuredClone(this.state.status);
-        status[col].filter((ele)=>ele.id==id)[0].status = Status.Pre;
+        status[col].filter((ele) => ele.id == item.id)[0].status = Status.Pre;
         this.setState({ status: status });
     }
 
@@ -95,7 +95,7 @@ class Game extends React.Component {
                     {[0, 1].map((col) =>
                         <div className="d-grid gap-3 col" key={"c" + col}>
                             {game[0].map((item) =>
-                                <WordElement word={item} key={"w" + item.id} onClick={() => this.handleClick(col, item.id)} />
+                                <WordElement word={item} key={"w" + item.id} onClick={() => this.handleClick(col, item)} />
                             )}
                         </div>
                     )}
