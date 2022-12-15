@@ -94,7 +94,7 @@ class Game extends React.Component {
                 <div className="row gx-5" key={"container2"}>
                     {[0, 1].map((col) =>
                         <div className="d-grid gap-3 col" key={"c" + col}>
-                            {game[0].map((item) =>
+                            {game[col].map((item) =>
                                 <WordElement word={item} key={"w" + item.id} onClick={() => this.handleClick(col, item)} />
                             )}
                         </div>
