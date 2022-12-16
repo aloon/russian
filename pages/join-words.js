@@ -10,8 +10,8 @@ const Status = {
 }
 
 const game = [
-    [{ "id": 1, "word": "1" }, { "id": 2, "word": "2" }, { "id": 3, "word": "3" }],
-    [{ "id": 1, "word": "a" }, { "id": 2, "word": "b" }, { "id": 3, "word": "c" }]
+    [{ "id": 10, "word": "10" }, { "id": 20, "word": "20" }, { "id": 30, "word": "30" }],
+    [{ "id": 10, "word": "a" }, { "id": 20, "word": "b" }, { "id": 30, "word": "c" }]
 ];
 
 function Title(props) {
@@ -29,14 +29,16 @@ class WordElement extends React.Component {
         };
     }
 
+    uncheck = () => {
+        this.setState({ status: Status.Unchecked });
+    }
+
     handleClick() {
         switch (this.state.status) {
             case Status.Unchecked:
-                // logica de juego
                 this.setState({ status: Status.Pre });
                 break;
             case Status.Pre:
-                // logica de desmarcado
                 this.setState({ status: Status.Unchecked });
                 break;
         }
@@ -72,25 +74,36 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: game.map((e) => e.map((e2) => {
+            status: game.map((c) => c.map((e) => {
                 return {
-                    id: e2.id,
+                    id: e.id,
                     status: Status.Unchecked
                 };
             }
             ))
         };
+        this.childrenRefs = game.map((c) => c.map((e) => React.createRef()));
     }
 
     handleClick(col, item) {
         const status = structuredClone(this.state.status);
+
         const preStatus = status[col].filter((ele) => ele.id == item.id)[0].status;
         let postStatus = Status.Pre;
         if (preStatus == Status.Pre) {
             postStatus = Status.Unchecked;
         }
+        if (postStatus == Status.Pre) {
+            this.childrenRefs[col].forEach((ele) => {
+                if (ele.current.state.status == Status.Pre) { 
+                    ele.current.uncheck() 
+                }
+            });
+            status[col].forEach((ele) => ele.status = Status.Unchecked);
+        }
 
         status[col].filter((ele) => ele.id == item.id)[0].status = postStatus;
+
         this.setState({ status: status });
     }
 
@@ -98,13 +111,17 @@ class Game extends React.Component {
         return (<>
             <div className="container px-4 text-center" key={"container"}>
                 <div className="row gx-5" key={"container2"}>
-                    {[0, 1].map((col) =>
-                        <div className="d-grid gap-3 col" key={"c" + col}>
-                            {game[col].map((item) =>
-                                <WordElement word={item} key={"w" + item.id} onClick={() => this.handleClick(col, item)} />
-                            )}
+                    {[0, 1].map((col) => {
+                        let i = 0;
+                        return <div className="d-grid gap-3 col" key={"c" + col}>
+                            {game[col].map((item) => {
+                                return <WordElement word={item}
+                                    key={"c" + col + "i" + item.id}
+                                    ref={this.childrenRefs[col][i++]}
+                                    onClick={() => this.handleClick(col, item)} />
+                            })}
                         </div>
-                    )}
+                    })}
                 </div>
             </div>
         </>);
