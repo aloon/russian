@@ -87,22 +87,27 @@ class Game extends React.Component {
 
     handleClick(col, item) {
         const status = structuredClone(this.state.status);
-
-        const preStatus = status[col].filter((ele) => ele.id == item.id)[0].status;
+        let position = 0;
+        let i = 0;
+        status[col].forEach((ele) => {
+            if (ele.id == item.id) position = i;
+            i++;
+        });
+        const preStatus = status[col][position].status;
         let postStatus = Status.Pre;
         if (preStatus == Status.Pre) {
             postStatus = Status.Unchecked;
         }
         if (postStatus == Status.Pre) {
             this.childrenRefs[col].forEach((ele) => {
-                if (ele.current.state.status == Status.Pre) { 
-                    ele.current.uncheck() 
+                if (ele.current.state.status == Status.Pre) {
+                    ele.current.uncheck()
                 }
             });
             status[col].forEach((ele) => ele.status = Status.Unchecked);
         }
 
-        status[col].filter((ele) => ele.id == item.id)[0].status = postStatus;
+        status[col][position].status = postStatus;
 
         this.setState({ status: status });
     }
@@ -114,12 +119,11 @@ class Game extends React.Component {
                     {[0, 1].map((col) => {
                         let i = 0;
                         return <div className="d-grid gap-3 col" key={"c" + col}>
-                            {game[col].map((item) => {
-                                return <WordElement word={item}
-                                    key={"c" + col + "i" + item.id}
-                                    ref={this.childrenRefs[col][i++]}
-                                    onClick={() => this.handleClick(col, item)} />
-                            })}
+                            {game[col].map((item) => <WordElement word={item}
+                                key={"c" + col + "i" + item.id}
+                                ref={this.childrenRefs[col][i++]}
+                                onClick={() => this.handleClick(col, item)} />
+                            )}
                         </div>
                     })}
                 </div>
