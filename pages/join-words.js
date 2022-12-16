@@ -29,10 +29,6 @@ class WordElement extends React.Component {
         };
     }
 
-    uncheck = () => {
-        this.setState({ status: Status.Unchecked });
-    }
-
     handleClick() {
         switch (this.state.status) {
             case Status.Unchecked:
@@ -101,7 +97,7 @@ class Game extends React.Component {
         if (postStatus == Status.Pre) {
             this.childrenRefs[col].forEach((ele) => {
                 if (ele.current.state.status == Status.Pre) {
-                    ele.current.uncheck()
+                    ele.current.state.status = Status.Unchecked;
                 }
             });
             status[col].forEach((ele) => ele.status = Status.Unchecked);
