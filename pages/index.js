@@ -2,6 +2,8 @@ import Link from 'next/link'
 
 function Home() {
   return (
+    <>
+    <div>{process.env.NODE_ENV}</div>
     <ul>
       <li>
         <Link href="/join-words">Join Words</Link>
@@ -10,6 +12,7 @@ function Home() {
         <Link href="/admin">Admin</Link>
       </li>
     </ul>
+    </>
   )
 }
 

@@ -83,13 +83,13 @@ class Game extends React.Component {
 
     handleClick(col, item) {
         const status = structuredClone(this.state.status);
-        let position = 0;
+        let clickedPosition = 0;
         let i = 0;
         status[col].forEach((ele) => {
-            if (ele.id == item.id) position = i;
+            if (ele.id == item.id) clickedPosition = i;
             i++;
         });
-        const preStatus = status[col][position].status;
+        const preStatus = status[col][clickedPosition].status;
         let postStatus = Status.Pre;
         if (preStatus == Status.Pre) {
             postStatus = Status.Unchecked;
@@ -103,7 +103,7 @@ class Game extends React.Component {
             status[col].forEach((ele) => ele.status = Status.Unchecked);
         }
 
-        status[col][position].status = postStatus;
+        status[col][clickedPosition].status = postStatus;
 
         this.setState({ status: status });
     }
