@@ -2,10 +2,15 @@ import Link from 'next/link'
 
 function Home() {
   let dbPasswd = "postgres"
-  if(process.env.NODE_ENV =="production") dbPasswd = process.env.DB_PASSW
+  if(process.env.NODE_ENV =="production") {
+    dbPasswd = process.env.DB_PASSW
+  }
   return (
     <>
-    <div>{dbPasswd}</div>
+    <div>
+      {process.env.NODE_ENV} <br />
+      {dbPasswd}
+      </div>
     <ul>
       <li>
         <Link href="/join-words">Join Words</Link>
