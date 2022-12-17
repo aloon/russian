@@ -10,7 +10,7 @@ function Home() {
     <div>
       -{process.env.NODE_ENV}- <br />
       -{dbPasswd}-<br/>
-      -{process.env.DB_PASSW}-
+      -{process.env.DB_PASSW}-<br />
       </div>
     <ul>
       <li>
