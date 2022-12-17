@@ -5,12 +5,12 @@ function Home() {
   if(process.env.NODE_ENV == "production") {
     dbPasswd = process.env["DB_PASSW"]
   }
+console.log(process.env);
   return (
     <>
     <div>
       -{process.env.NODE_ENV}- <br />
       -{dbPasswd}-<br/>
-      -{process.env["DB_PASSW"]}-<br />
       </div>
     <ul>
       <li>
