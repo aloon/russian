@@ -12,6 +12,14 @@ console.log(process.env);
       -{process.env.NODE_ENV}- <br />
       -{dbPasswd}-<br/>
       </div>
+      {/* <ul>
+        {Object.entries(process.env).map((e) => {
+         // console.log(e);
+          return (
+            <li>*</li>
+          )
+        })}
+      </ul> */}
     <ul>
       <li>
         <Link href="/join-words">Join Words</Link>
