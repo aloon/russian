@@ -8,5 +8,3 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5432:5432'
-    volumes: 
-      - ./sql/001_create_table_join_words.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
