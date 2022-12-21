@@ -5,7 +5,6 @@ on:
       - main
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  DB_PASSW: ${{ secrets.DB_PASSW }}
 jobs:
   deploy:
       name: Deploy app
