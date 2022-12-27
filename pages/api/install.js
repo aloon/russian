@@ -1,4 +1,4 @@
-import conn from '../../db';
+import conn from '../../lib/db';
 
 export default function handler(req, res) {
 
@@ -72,9 +72,4 @@ export default function handler(req, res) {
             res.status(200).json(files)
         });
     });
-
-
-
-
-
 }
