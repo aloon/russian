@@ -8,6 +8,7 @@ export default function handler(req, res) {
         })
     };
 
+    const queryAllCats = `select * from categories `;
     if (req.method == "POST") {
         const query = `insert into categories (name) values ($1)`;
         conn.query(query, [req.body.word], (err, result) => {
@@ -15,20 +16,16 @@ export default function handler(req, res) {
                 console.error(err);
                 return;
             }
-            const query = `select * from categories `;
-            conn.query(query, (err, result) => {
+            conn.query(queryAllCats, (err, result) => {
                 return res.status(200).json(result.rows.map((w) => w.name));
             })
         });
     } else if (req.method == "GET") {
-        const query = `select * from categories `;
-        conn.query(query, (err, result) => {
+        conn.query(queryAllCats, (err, result) => {
             return res.status(200).json(result.rows.map((w) => w.name));
         })
     }
     else {
         res.status(405).json({ message: "Method not allowed" });
     }
-
-
 }

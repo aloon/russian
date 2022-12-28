@@ -1,6 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
-import { render } from 'react-dom';
 
 class ContentCategory extends React.Component {
     constructor(props) {
@@ -42,7 +41,6 @@ class ContentCategory extends React.Component {
     }
 
     render() {
-        let b = 0;
         return (<>
             <table className="table">
                 <thead>
@@ -54,7 +52,6 @@ class ContentCategory extends React.Component {
                 <tbody>
                     {
                         this.state.categories.map((c, i) => {
-                            b = i;
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
                                 <td>{c}</td>
