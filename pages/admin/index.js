@@ -5,10 +5,7 @@ export default function HomeAdmin() {
         <>
             <ul>
                 <li>
-                    <Link href="/admin/categories">Categories</Link>
-                </li>
-                <li>
-                    <Link href="/admin/join-words">Join Words</Link>
+                    <Link href="/admin/categories">Categories in join words</Link>
                 </li>
             </ul>
         </>
