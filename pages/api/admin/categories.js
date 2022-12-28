@@ -1,13 +1,6 @@
 import conn from "../../../lib/db";
 
 export default function handler(req, res) {
-    function allCategories() {
-        const query = `select * from categories `;
-        conn.query(query, (err, result) => {
-            return result.rows.map((w) => w.name);
-        })
-    };
-
     const queryAllCats = `select * from categories `;
     if (req.method == "POST") {
         const query = `insert into categories (name) values ($1)`;
