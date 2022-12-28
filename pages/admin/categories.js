@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
+import { render } from 'react-dom';
 
 class ContentCategory extends React.Component {
     constructor(props) {
@@ -12,11 +13,11 @@ class ContentCategory extends React.Component {
         const t = this;
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         fetch(url + '/api/admin/categories')
-        .then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            t.setState({ categories: data })
-        });
+            .then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                t.setState({ categories: data })
+            });
     }
 
     add(e) {
@@ -35,12 +36,13 @@ class ContentCategory extends React.Component {
                 return response.json();
             }).then(function (data) {
                 t.setState({ categories: data })
+                document.getElementById('new_cat').value = "";
             });
         }
     }
 
     render() {
-        console.log(this.state.categories)
+        let b = 0;
         return (<>
             <table className="table">
                 <thead>
@@ -51,15 +53,15 @@ class ContentCategory extends React.Component {
                 </thead>
                 <tbody>
                     {
-                    //console.log(this.state.categories)
-                    this.state.categories.map((c, i) => {
+                        this.state.categories.map((c, i) => {
+                            b = i;
+                            return <tr key={"t" + i}>
+                                <th scope="row" key={"th" + i}>{i + 1}</th>
+                                <td>{c}</td>
+                            </tr>
+                        })}
                     <tr>
-                        <th scope="row">{i}</th>
-                        <td>{c}</td>
-                    </tr>
-                    })}
-                    <tr>
-                        <th scope="row">2</th>
+                        <th scope="row">{this.state.categories.length + 1}</th>
                         <td>
                             <input type="text" className="form-control" placeholder="New Category" id='new_cat' onKeyUp={(e) => this.add(e)} />
                         </td>
