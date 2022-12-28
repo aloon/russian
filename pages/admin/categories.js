@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
 
 class ContentCategory extends React.Component {
@@ -54,7 +55,7 @@ class ContentCategory extends React.Component {
                         this.state.categories.map((c, i) => {
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
-                                <td>{c}</td>
+                                <td><Link href={"/admin/join-words?cat="+c.id}>{c.word}</Link></td>
                             </tr>
                         })}
                     <tr>

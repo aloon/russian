@@ -17,12 +17,12 @@ export default function handler(req, res) {
                 return;
             }
             conn.query(queryAllCats, (err, result) => {
-                return res.status(200).json(result.rows.map((w) => w.name));
+                return res.status(200).json(result.rows.map((w) => {return {"id": w.id, "word":w.name}}));
             })
         });
     } else if (req.method == "GET") {
         conn.query(queryAllCats, (err, result) => {
-            return res.status(200).json(result.rows.map((w) => w.name));
+            return res.status(200).json(result.rows.map((w) => {return {"id": w.id, "word":w.name}}));
         })
     }
     else {
