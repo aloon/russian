@@ -1,7 +1,7 @@
 export default function JoinWordsAdmin() {
     return (
         <>
-            <div></div>
+            <div>add join words</div>
         </>
     )
 }
