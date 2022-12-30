@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Login from './login'
 
 function Home() {
 

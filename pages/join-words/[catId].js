@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
-
     return { props: { catId: catId } }
 }
 
@@ -18,8 +17,8 @@ const Status = {
 }
 
 const game = [
-    [{ "id": 10, "word": "10" }, { "id": 20, "word": "20" }, { "id": 30, "word": "30" }],
-    [{ "id": 10, "word": "a" }, { "id": 20, "word": "b" }, { "id": 30, "word": "c" }]
+    [{ "id": 10, "word": "10" }, { "id": 20, "word": "20" }, { "id": 30, "word": "30" }, { "id": 40, "word": "40" }],
+    [{ "id": 10, "word": "a" }, { "id": 20, "word": "b" }, { "id": 30, "word": "c" }, { "id": 40, "word": "d" }]
 ];
 
 function Title(props) {
@@ -84,10 +83,15 @@ class Game extends React.Component {
                     status: Status.Unchecked
                 };
             }
-            ))
-        };
+            )),
+            catId: props.catId
+        }
         this.childrenRefs = game.map((c) => c.map((e) => React.createRef()));
+
+        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
+        fetch(url + "/api/join-words/" + this.state.catId)
     }
+
 
     handleClick(col, item) {
         const status = structuredClone(this.state.status);
