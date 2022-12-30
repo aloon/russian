@@ -23,21 +23,17 @@ export default function handler(req, res) {
     );`;
     conn.query(query, (err, result) => {
         fs.readdir(directoryPath, function (err, files) {
-            //handling error
             if (err) {
                 return console.log('Unable to scan directory: ' + err);
             }
 
 
             files.forEach(function (file) {
-                //console.log(file);
-
                 fs.readFile(directoryPath + '/../sql-migrations/' + file, 'utf8', (err, data) => {
                     if (err) {
                         console.error(err);
                         return;
                     }
-                    //  console.log(data);
                     conn.query(`
                     insert into sql_migrations (name, sql) values ($1, $2) on conflict (name) do nothing;
                 `, [file, data], (err, result) => {
@@ -47,7 +43,6 @@ export default function handler(req, res) {
                         }
 
                         const sqls = conn.query(`select * from sql_migrations where procesed = false order by name`, (err, result) => {
-                            //console.log(result);
                             result.rows.forEach((row) => {
                                 conn.query(row.sql, (err, result) => {
                                     if (err) {
@@ -66,8 +61,6 @@ export default function handler(req, res) {
 
                     });
                 });
-
-
             });
             res.status(200).json(files)
         });

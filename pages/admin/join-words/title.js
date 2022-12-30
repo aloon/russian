@@ -1,7 +1,7 @@
 import { withRouter } from 'next/router';
 import React from 'react';
 
-class Title extends React.Component {    
+class Title extends React.Component {
 
     constructor(props) {
         super(props);
@@ -20,7 +20,6 @@ class Title extends React.Component {
     }
 
     render() {
-        
         return (<>
             <h1>Join <u>{this.state.category}</u> words.</h1>
         </>)
