@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link'
+import 'bootstrap/dist/css/bootstrap.css'
 
 
 class JoinWordsCategories extends React.Component {
@@ -19,9 +20,9 @@ class JoinWordsCategories extends React.Component {
 
     render() {
         return (<>
-            <ul>
+            <ul className="list-group">
                 {this.state.categories.map((category) => (
-                    <li key={"l" + category.id}><Link href={"/join-words/" + category.id} key={"c" + category.id}>{category.word}</Link></li>
+                    <li className="list-group-item text-center" key={"l" + category.id}><Link href={"/join-words/" + category.id} key={"c" + category.id}>{category.word}</Link></li>
                 ))}
             </ul>
         </>);
