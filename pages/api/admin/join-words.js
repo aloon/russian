@@ -11,12 +11,24 @@ export default function handler(req, res) {
                 return;
             }
             conn.query(queryAllWords, [catId], (err, result) => {
-                return res.status(200).json(result.rows.map((w) => { return { "word1": w.word1, "word2": w.word2 } }));
+                return res.status(200).json(result.rows.map((w) => { return { "word1": w.word1, "word2": w.word2, "id": w.id} }));
             })
         });
-    } else if (req.method == "GET") {
+    }else if (req.method == "DELETE") {
+        const query = `delete from join_words where id=$1`;
+        conn.query(query, [req.query.id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            conn.query(queryAllWords, [catId], (err, result) => {
+                return res.status(200).json(result.rows.map((w) => { return { "word1": w.word1, "word2": w.word2, "id": w.id} }));
+            })
+        });
+    } 
+    else if (req.method == "GET") {
         conn.query(queryAllWords, [catId], (err, result) => {
-            return res.status(200).json(result.rows.map((w) => { return { "word1": w.word1, "word2": w.word2 } }));
+            return res.status(200).json(result.rows.map((w) => { return { "word1": w.word1, "word2": w.word2, "id": w.id } }));
         })
     }
     else {

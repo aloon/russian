@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
-
     return { props: { catId: catId } }
 }
 
@@ -50,6 +49,19 @@ class JoinWords extends React.Component {
             });
         }
     }
+    delete(id){
+        const t = this;
+        fetch('/api/admin/join-words?id=' + id+"&cat="+ this.state.catId, {
+            method: 'DELETE',
+            headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8'
+            })
+        }).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            t.setState({ words: data })
+        });
+    }
 
     render() {
         return (<>
@@ -59,15 +71,18 @@ class JoinWords extends React.Component {
                         <th scope="col">#</th>
                         <th scope="col">word1</th>
                         <th scope="col">word2</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         this.state.words.map((c, i) => {
+                            console.log(c)
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
                                 <td>{c.word1}</td>
                                 <td>{c.word2}</td>
+                                <td><button onClick={() => this.delete(c.id)}>Delete</button></td>
                             </tr>
                         })}
                     <tr>

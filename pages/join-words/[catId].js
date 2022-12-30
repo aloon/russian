@@ -87,7 +87,6 @@ class Game extends React.Component {
             )),
             catId: props.catId
         }
-        console.log(this.state);
         this.childrenRefs = game.map((c) => c.map((e) => React.createRef()));
 
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
