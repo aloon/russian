@@ -1,7 +1,7 @@
 import { withRouter } from 'next/router';
 import React from 'react';
 
-class JoinWordsTitle extends React.Component {    
+class Title extends React.Component {    
 
     constructor(props) {
         super(props);
@@ -22,10 +22,9 @@ class JoinWordsTitle extends React.Component {
     render() {
         
         return (<>
-            <h1>Join words</h1>
-            <p>Category: {this.state.category}</p>
+            <h1>Join <u>{this.state.category}</u> words.</h1>
         </>)
     }
 }
 
-export default withRouter(JoinWordsTitle);
+export default withRouter(Title);
