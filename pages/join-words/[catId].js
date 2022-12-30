@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import 'bootstrap/dist/css/bootstrap.css'
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
@@ -86,6 +87,7 @@ class Game extends React.Component {
             )),
             catId: props.catId
         }
+        console.log(this.state);
         this.childrenRefs = game.map((c) => c.map((e) => React.createRef()));
 
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
@@ -141,12 +143,14 @@ class Game extends React.Component {
 }
 
 export default function JoinWords() {
+    const router = useRouter()
+    const { catId } = router.query
     return (
         <div>
             <main>
                 <Link href={"/join-words/categories"}>Back</Link>
                 <Title value={"Join Words"} />
-                <Game />
+                <Game catId={catId} />
             </main>
             <footer>
             </footer>
