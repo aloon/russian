@@ -11,7 +11,8 @@ class JoinWordsCategories extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:3000/api/join-words/categories')
+        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
+        fetch(url + '/api/join-words/categories')
             .then(response => response.json())
             .then(data => this.setState({ categories: data }));
     }
@@ -20,7 +21,7 @@ class JoinWordsCategories extends React.Component {
         return (<>
             <ul>
                 {this.state.categories.map((category) => (
-                <li key={"l"+category.id}><Link href={"/join-words/"+category.id} key={"c"+category.id}>{category.word}</Link></li>
+                    <li key={"l" + category.id}><Link href={"/join-words/" + category.id} key={"c" + category.id}>{category.word}</Link></li>
                 ))}
             </ul>
         </>);
