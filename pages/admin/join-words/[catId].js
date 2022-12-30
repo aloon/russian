@@ -14,12 +14,13 @@ class JoinWords extends React.Component {
         super(props);
 
         this.state = {
-            words: []
+            words: [],
+            catId: props.catId
         };
 
         const t = this;
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
-        fetch(url + '/api/admin/words?cat=' + props.catId)
+        fetch(url + '/api/admin/join-words?cat=' + this.state.catId)
             .then(function (response) {
                 return response.json();
             }).then(function (data) {
@@ -31,14 +32,14 @@ class JoinWords extends React.Component {
         const t = this;
         if (e.key === "Enter") {
             e.preventDefault();
-            fetch('/api/admin/words?cat=' + props.catId, {
+            fetch('/api/admin/join-words?cat=' + this.state.catId, {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json; charset=UTF-8'
                 }),
                 body: JSON.stringify({
-                    word1: e.target.value,
-                    word2: e.target.value
+                    word1: document.getElementById('word1').value,
+                    word2: document.getElementById('word2').value
                 })
             }).then(function (response) {
                 return response.json();
@@ -92,7 +93,7 @@ export default function JoinWordsAdmin() {
             <main>
                 <Link href={"/admin"}>Back</Link>
                 <Title catId={catId} />
-                <JoinWords />
+                <JoinWords  catId={catId}/>
             </main>
             <footer>
             </footer>
