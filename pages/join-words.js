@@ -1,6 +1,7 @@
 // https://es.reactjs.org/tutorial/tutorial.html
 
 import React from 'react';
+import Link from 'next/link';
 
 const Status = {
     Unchecked: 0,
@@ -132,6 +133,7 @@ export default function JoinWords() {
     return (
         <div>
             <main>
+                <Link href={"/"}>Back</Link>
                 <Title value={"Join Words"} />
                 <Game />
             </main>

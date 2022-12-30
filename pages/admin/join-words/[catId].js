@@ -91,9 +91,9 @@ export default function JoinWordsAdmin() {
     return (
         <div>
             <main>
-                <Link href={"/admin"}>Back</Link>
+                <Link href={"/admin/categories"}>Back</Link>
                 <Title catId={catId} />
-                <JoinWords  catId={catId}/>
+                <JoinWords catId={catId} />
             </main>
             <footer>
             </footer>

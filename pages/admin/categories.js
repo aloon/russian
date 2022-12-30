@@ -74,6 +74,7 @@ export default function Categories() {
     return (
         <div>
             <main>
+                <Link href={"/admin"}>Back</Link>
                 <ContentCategory />
             </main>
             <footer>
