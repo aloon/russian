@@ -6,7 +6,7 @@ function Home() {
     <>
     <ul>
       <li>
-        <Link href="/join-words">Join Words</Link>
+        <Link href="/join-words/categories">Join Words</Link>
       </li>
       <li>
         <Link href="/admin">Admin</Link>

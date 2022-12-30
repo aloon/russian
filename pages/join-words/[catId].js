@@ -2,6 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
+import 'bootstrap/dist/css/bootstrap.css'
+
+export async function getServerSideProps(context) {
+    const { catId } = context.params;
+
+    return { props: { catId: catId } }
+}
 
 const Status = {
     Unchecked: 0,
@@ -133,7 +140,7 @@ export default function JoinWords() {
     return (
         <div>
             <main>
-                <Link href={"/"}>Back</Link>
+                <Link href={"/join-words/categories"}>Back</Link>
                 <Title value={"Join Words"} />
                 <Game />
             </main>
