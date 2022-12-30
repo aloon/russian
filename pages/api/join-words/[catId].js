@@ -9,7 +9,7 @@ export default function handler(req, res) {
     limit ${limit}`;
     if (req.method == "GET") {
         conn.query(queryWords, (err, result) => {
-            const results = Array.from({ length: 2 }, (x, i) => {
+            const results = [0, 1].map((i) => {
                 return result.rows.map((w) => {
                     return { "id": w.id, "word1": w.word1, "word2": w.word2 }
                 }).map((w) => {
