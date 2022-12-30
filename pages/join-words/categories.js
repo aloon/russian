@@ -20,7 +20,7 @@ class JoinWordsCategories extends React.Component {
         return (<>
             <ul>
                 {this.state.categories.map((category) => (
-                <li><Link href={"/join-words/"+category.id}>{category.word}</Link></li>
+                <li><Link href={"/join-words/"+category.id} key={category.id}>{category.word}</Link></li>
                 ))}
             </ul>
         </>);
