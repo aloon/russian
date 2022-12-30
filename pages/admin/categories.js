@@ -55,7 +55,7 @@ class ContentCategory extends React.Component {
                         this.state.categories.map((c, i) => {
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
-                                <td><Link href={"/admin/join-words?cat="+c.id}>{c.word}</Link></td>
+                                <td><Link href={"/admin/join-words/" + c.id}>{c.word}</Link></td>
                             </tr>
                         })}
                     <tr>
