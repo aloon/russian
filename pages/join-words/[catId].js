@@ -17,11 +17,6 @@ const Status = {
     Ko: 3
 }
 
-const game = [
-    [{ "id": 10, "word": "10" }, { "id": 20, "word": "20" }, { "id": 30, "word": "30" }, { "id": 40, "word": "40" }],
-    [{ "id": 10, "word": "a" }, { "id": 20, "word": "b" }, { "id": 30, "word": "c" }, { "id": 40, "word": "d" }]
-];
-
 function Title(props) {
     return (<>
         <h1 className="text-center">{props.value}</h1><br />
@@ -105,7 +100,6 @@ class Game extends React.Component {
         if (preStatus == Status.Pre) {            
             postStatus = Status.Unchecked;
         }
-        //this.childrenRefs[0][0].current.state.status = Status.Ok;
         if (postStatus == Status.Pre) {
             this.childrenRefs[col].forEach((ele) => {
                 if (ele.current.state.status == Status.Pre) {
@@ -113,8 +107,7 @@ class Game extends React.Component {
                 }
             });
             status[col].forEach((ele) => ele.status = Status.Unchecked);
-        }
-
+        }        
         status[col][pos].status = postStatus;
         this.setState({ status: status });
     }

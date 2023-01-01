@@ -17,18 +17,18 @@ class JoinWords extends React.Component {
             catId: props.catId
         };
 
-        const t = this;
+        const _this = this;
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         fetch(url + '/api/admin/join-words?cat=' + this.state.catId)
             .then(function (response) {
                 return response.json();
             }).then(function (data) {
-                t.setEstado({ words: data })
+                _this.setState({ words: data })
             });
     }
 
     add(e) {
-        const t = this;
+        const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
             fetch('/api/admin/join-words?cat=' + this.state.catId, {
@@ -43,14 +43,14 @@ class JoinWords extends React.Component {
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
-                t.setEstado({ words: data })
+                _this.setState({ words: data })
                 document.getElementById('word1').value = "";
                 document.getElementById('word2').value = "";
             });
         }
     }
     delete(id) {
-        const t = this;
+        const _this = this;
         fetch('/api/admin/join-words?id=' + id + "&cat=" + this.state.catId, {
             method: 'DELETE',
             headers: new Headers({
@@ -59,7 +59,7 @@ class JoinWords extends React.Component {
         }).then(function (response) {
             return response.json();
         }).then(function (data) {
-            t.setEstado({ words: data })
+            _this.setState({ words: data })
         });
     }
 
@@ -77,7 +77,6 @@ class JoinWords extends React.Component {
                 <tbody>
                     {
                         this.state.words.map((c, i) => {
-                            console.log(c)
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
                                 <td>{c.word1}</td>
