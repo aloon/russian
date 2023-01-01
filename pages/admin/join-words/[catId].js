@@ -23,7 +23,7 @@ class JoinWords extends React.Component {
             .then(function (response) {
                 return response.json();
             }).then(function (data) {
-                t.setState({ words: data })
+                t.setEstado({ words: data })
             });
     }
 
@@ -43,7 +43,7 @@ class JoinWords extends React.Component {
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
-                t.setState({ words: data })
+                t.setEstado({ words: data })
                 document.getElementById('word1').value = "";
                 document.getElementById('word2').value = "";
             });
@@ -59,7 +59,7 @@ class JoinWords extends React.Component {
         }).then(function (response) {
             return response.json();
         }).then(function (data) {
-            t.setState({ words: data })
+            t.setEstado({ words: data })
         });
     }
 

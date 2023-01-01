@@ -15,7 +15,7 @@ class Title extends React.Component {
             .then(function (response) {
                 return response.json();
             }).then(function (data) {
-                t.setState({ category: data.data })
+                t.setEstado({ category: data.data })
             });
     }
 

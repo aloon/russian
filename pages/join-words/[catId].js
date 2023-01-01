@@ -66,11 +66,9 @@ class WordElement extends React.Component {
                 clazz = "p-3 bg-danger border";
                 break;
         }
-        return (<>
-            <div className={clazz} onClick={() => this.handleClick()}>
-                {this.state.element.word}
-            </div>
-        </>);
+        return (<div className={clazz} onClick={() => this.handleClick()}>
+            {this.state.element.word}
+        </div>);
     }
 }
 
@@ -78,35 +76,36 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: game.map((c) => c.map((e) => {
-                return {
-                    id: e.id,
-                    status: Status.Unchecked
-                };
-            }
-            )),
+            status: [[], []],
             catId: props.catId
         }
-        this.childrenRefs = game.map((c) => c.map((e) => React.createRef()));
+    }
 
+    componentDidMount() {
+        const _this = this;
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         fetch(url + "/api/join-words/" + this.state.catId)
+            .then((res) => res.json())
+            .then((data) => data.map((col) => col
+                .sort(() => (Math.random() > 0.5) ? 1 : -1)
+                .map((item) => {
+                    return { id: item.id, word: item.word, status: Status.Unchecked }
+                }))
+            ).then(function (data) {
+                _this.setState({ status: data, catId: _this.state.catId })
+                _this.childrenRefs = data.map((c) => c.map((e) => React.createRef()));
+            });
     }
 
 
-    handleClick(col, item) {
+    handleClick(col, item, pos) {
         const status = structuredClone(this.state.status);
-        let clickedPosition = 0;
-        let i = 0;
-        status[col].forEach((ele) => {
-            if (ele.id == item.id) clickedPosition = i;
-            i++;
-        });
-        const preStatus = status[col][clickedPosition].status;
+        const preStatus = status[col][pos].status;
         let postStatus = Status.Pre;
-        if (preStatus == Status.Pre) {
+        if (preStatus == Status.Pre) {            
             postStatus = Status.Unchecked;
         }
+        //this.childrenRefs[0][0].current.state.status = Status.Ok;
         if (postStatus == Status.Pre) {
             this.childrenRefs[col].forEach((ele) => {
                 if (ele.current.state.status == Status.Pre) {
@@ -116,28 +115,24 @@ class Game extends React.Component {
             status[col].forEach((ele) => ele.status = Status.Unchecked);
         }
 
-        status[col][clickedPosition].status = postStatus;
-
+        status[col][pos].status = postStatus;
         this.setState({ status: status });
     }
 
     render() {
-        return (<>
-            <div className="container px-4 text-center" key={"container"}>
-                <div className="row gx-5" key={"container2"}>
-                    {[0, 1].map((col) => {
-                        let i = 0;
-                        return <div className="d-grid gap-3 col" key={"c" + col}>
-                            {game[col].map((item) => <WordElement word={item}
-                                key={"c" + col + "i" + item.id}
-                                ref={this.childrenRefs[col][i++]}
-                                onClick={() => this.handleClick(col, item)} />
-                            )}
-                        </div>
-                    })}
-                </div>
+        return (<div className="container px-4 text-center" key={"container"}>
+            <div className="row gx-5" key={"container2"}>
+                {[0, 1].map((col) => {
+                    return <div className="d-grid gap-3 col" key={"c" + col}>
+                        {this.state.status[col].map((item, pos) => <WordElement word={item}
+                            key={"c" + col + "i" + item.id}
+                            ref={this.childrenRefs[col][pos]}
+                            onClick={() => this.handleClick(col, item, pos)} />
+                        )}
+                    </div>
+                })}
             </div>
-        </>);
+        </div>);
     }
 }
 
