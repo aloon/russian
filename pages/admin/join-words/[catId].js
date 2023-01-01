@@ -49,9 +49,9 @@ class JoinWords extends React.Component {
             });
         }
     }
-    delete(id){
+    delete(id) {
         const t = this;
-        fetch('/api/admin/join-words?id=' + id+"&cat="+ this.state.catId, {
+        fetch('/api/admin/join-words?id=' + id + "&cat=" + this.state.catId, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8'
