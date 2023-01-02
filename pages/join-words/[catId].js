@@ -33,14 +33,14 @@ class WordElement extends React.Component {
     }
 
     handleClick() {
-        switch (this.state.status) {
-            case Status.Unchecked:
-                this.setState({ status: Status.Pre });
-                break;
-            case Status.Pre:
-                this.setState({ status: Status.Unchecked });
-                break;
-        }
+        // switch (this.state.status) {
+        //     case Status.Unchecked:
+        //         this.setState({ status: Status.Pre });
+        //         break;
+        //     case Status.Pre:
+        //         this.setState({ status: Status.Unchecked });
+        //         break;
+        // }
 
         this.props.onClick()
     }
@@ -92,24 +92,111 @@ class Game extends React.Component {
             });
     }
 
-
-    handleClick(col, item, pos) {
-        const status = structuredClone(this.state.status);
-        const preStatus = status[col][pos].status;
-        let postStatus = Status.Pre;
-        if (preStatus == Status.Pre) {            
-            postStatus = Status.Unchecked;
-        }
-        if (postStatus == Status.Pre) {
-            this.childrenRefs[col].forEach((ele) => {
-                if (ele.current.state.status == Status.Pre) {
-                    ele.current.state.status = Status.Unchecked;
+    anySelectedElement() {
+        let any = false;
+        this.state.status.forEach((col) => {
+            col.forEach((item) => {
+                if (item.status != Status.Unchecked) {
+                    any = true;
                 }
             });
-            status[col].forEach((ele) => ele.status = Status.Unchecked);
-        }        
-        status[col][pos].status = postStatus;
+        });
+        return any;
+    }
+
+    anySelectedElementInCol(col) {
+        let any = false;
+        this.state.status[col].forEach((item) => {
+            if (item.status = Status.Pre) {
+                any = true;
+            }
+        });
+        return any;
+    }
+
+    isPreSelectedElement(col, pos) {
+        return this.state.status[col][pos].status == Status.Pre;
+    }
+
+    onePreSelectedElementInOtherCol(col) {
+        const otherCol = (col == 0) ? 1 : 0;
+        let any = false;
+        this.state.status[otherCol].forEach((item) => {
+            if (item.status == Status.Pre) {
+                any = true;
+            }
+        });
+        return any;
+    }
+
+    otherPos(col) {
+        const otherCol = (col == 0) ? 1 : 0;
+        let otherPos = -1;
+        this.state.status[otherCol].forEach((item, i) => {
+            if (item.status == Status.Pre) {
+                otherPos = i;
+            }
+        });
+        return otherPos;
+    }
+
+    otherPosSameCol(col) {
+        let otherPos = -1;
+        this.state.status[col].forEach((item, i) => {
+            if (item.status == Status.Pre) {
+                otherPos = i;
+            }
+        });
+        return otherPos;
+    }
+
+    isOk(col, pos) {
+        const otherCol = (col == 0) ? 1 : 0;
+        let otherPos = -1;
+        this.state.status[otherCol].forEach((item, i) => {
+            if (item.status == Status.Pre) {
+                otherPos = i;
+            }
+        });
+        return this.state.status[col][pos].id == this.state.status[otherCol][otherPos].id;
+    }
+
+    handleClick(col, item, pos) {
+        /* 
+        - ningun elemento seleccionado en ninguna columna -> seleccionano pre
+        * un elemento seleccionado en misma col -> deseleccionar
+        - click un elemento seleccionado con pre -> deseleccionar
+        - un elemento seleccionado como pre en otra columna
+            - si es el mismo -> ok
+            - si es diferente -> nok
+        */
+
+        const otherCol = (col == 0) ? 1 : 0;
+        const status = structuredClone(this.state.status);
+
+        if (!this.anySelectedElement()) {
+            this.childrenRefs[col][pos].current.setState({ status: Status.Pre });
+            status[col][pos].status = Status.Pre;
+        } else if (this.isPreSelectedElement(col, pos)) {
+            this.childrenRefs[col][pos].current.setState({ status: Status.Unchecked });
+            status[col][pos].status = Status.Unchecked;
+        } else if (this.onePreSelectedElementInOtherCol(col)) {
+            const otherPos = this.otherPos(col);
+            if (this.isOk(col, pos)) {
+                this.childrenRefs[col][pos].current.setState({ status: Status.Ok });
+                status[col][pos].status = Status.Ok;
+                this.childrenRefs[otherCol][otherPos].current.setState({ status: Status.Ok });
+                status[otherCol][otherPos].status = Status.Ok;
+            } else {
+                this.childrenRefs[col][pos].current.setState({ status: Status.Ko });
+                status[col][pos].status = Status.Ko;
+                this.childrenRefs[otherCol][otherPos].current.setState({ status: Status.Ko });
+                status[otherCol][otherPos].status = Status.Ko;
+            }
+        }
         this.setState({ status: status });
+
+
     }
 
     render() {
