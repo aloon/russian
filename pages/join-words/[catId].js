@@ -33,15 +33,6 @@ class WordElement extends React.Component {
     }
 
     handleClick() {
-        // switch (this.state.status) {
-        //     case Status.Unchecked:
-        //         this.setState({ status: Status.Pre });
-        //         break;
-        //     case Status.Pre:
-        //         this.setState({ status: Status.Unchecked });
-        //         break;
-        // }
-
         this.props.onClick()
     }
 
@@ -61,9 +52,7 @@ class WordElement extends React.Component {
                 clazz = "p-3 bg-danger border";
                 break;
         }
-        return (<div className={clazz} onClick={() => this.handleClick()}>
-            {this.state.element.word}
-        </div>);
+        return (<div className={clazz} onClick={() => this.handleClick()}>{this.state.element.word}</div>);
     }
 }
 
@@ -96,18 +85,19 @@ class Game extends React.Component {
         let any = false;
         this.state.status.forEach((col) => {
             col.forEach((item) => {
-                if (item.status != Status.Unchecked) {
+                if (item.status != Status.Unchecked && item.status != Status.Ko && item.status != Status.Ok) {
                     any = true;
                 }
             });
         });
+        console.log("anySelectedElement", any);
         return any;
     }
 
     anySelectedElementInCol(col) {
         let any = false;
         this.state.status[col].forEach((item) => {
-            if (item.status = Status.Pre) {
+            if (item.status == Status.Pre) {
                 any = true;
             }
         });
@@ -195,8 +185,6 @@ class Game extends React.Component {
             }
         }
         this.setState({ status: status });
-
-
     }
 
     render() {
