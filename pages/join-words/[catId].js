@@ -159,24 +159,25 @@ class Game extends React.Component {
             - si es diferente -> nok
         */
 
-        const otherCol = (col == 0) ? 1 : 0;
         const status = structuredClone(this.state.status);
-
-        if (!this.anySelectedElement()) {
-            this.childrenRefs[col][pos].current.setState({ status: Status.Pre });
-            status[col][pos].status = Status.Pre;
-        } else if (this.isPreSelectedElement(col, pos)) {
-            this.childrenRefs[col][pos].current.setState({ status: Status.Unchecked });
-            status[col][pos].status = Status.Unchecked;
-        } else if (this.onePreSelectedElementInOtherCol(col)) {
-            const otherPos = this.otherPos(col);
-            const result = this.isOk(col, pos) ? Status.Ok : Status.Ko;
-            this.childrenRefs[col][pos].current.setState({ status: result });
-            status[col][pos].status = result;
-            this.childrenRefs[otherCol][otherPos].current.setState({ status: result });
-            status[otherCol][otherPos].status = result;
+        if (status[col][pos].status == Status.Unchecked) {
+            const otherCol = (col == 0) ? 1 : 0;
+            if (!this.anySelectedElement()) {
+                this.childrenRefs[col][pos].current.setState({ status: Status.Pre });
+                status[col][pos].status = Status.Pre;
+            } else if (this.isPreSelectedElement(col, pos)) {
+                this.childrenRefs[col][pos].current.setState({ status: Status.Unchecked });
+                status[col][pos].status = Status.Unchecked;
+            } else if (this.onePreSelectedElementInOtherCol(col)) {
+                const otherPos = this.otherPos(col);
+                const result = this.isOk(col, pos) ? Status.Ok : Status.Ko;
+                this.childrenRefs[col][pos].current.setState({ status: result });
+                status[col][pos].status = result;
+                this.childrenRefs[otherCol][otherPos].current.setState({ status: result });
+                status[otherCol][otherPos].status = result;
+            }
+            this.setState({ status: status });
         }
-        this.setState({ status: status });
     }
 
     render() {
