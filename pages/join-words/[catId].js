@@ -90,7 +90,6 @@ class Game extends React.Component {
                 }
             });
         });
-        console.log("anySelectedElement", any);
         return any;
     }
 
@@ -154,7 +153,6 @@ class Game extends React.Component {
     handleClick(col, item, pos) {
         /* 
         - ningun elemento seleccionado en ninguna columna -> seleccionano pre
-        * un elemento seleccionado en misma col -> deseleccionar
         - click un elemento seleccionado con pre -> deseleccionar
         - un elemento seleccionado como pre en otra columna
             - si es el mismo -> ok
@@ -172,17 +170,11 @@ class Game extends React.Component {
             status[col][pos].status = Status.Unchecked;
         } else if (this.onePreSelectedElementInOtherCol(col)) {
             const otherPos = this.otherPos(col);
-            if (this.isOk(col, pos)) {
-                this.childrenRefs[col][pos].current.setState({ status: Status.Ok });
-                status[col][pos].status = Status.Ok;
-                this.childrenRefs[otherCol][otherPos].current.setState({ status: Status.Ok });
-                status[otherCol][otherPos].status = Status.Ok;
-            } else {
-                this.childrenRefs[col][pos].current.setState({ status: Status.Ko });
-                status[col][pos].status = Status.Ko;
-                this.childrenRefs[otherCol][otherPos].current.setState({ status: Status.Ko });
-                status[otherCol][otherPos].status = Status.Ko;
-            }
+            const result = this.isOk(col, pos) ? Status.Ok : Status.Ko;
+            this.childrenRefs[col][pos].current.setState({ status: result });
+            status[col][pos].status = result;
+            this.childrenRefs[otherCol][otherPos].current.setState({ status: result });
+            status[otherCol][otherPos].status = result;
         }
         this.setState({ status: status });
     }
