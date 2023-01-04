@@ -14,7 +14,7 @@ class Login extends React.Component {
             email: document.getElementById("email").value,
             password: document.getElementById("pass").value
         }
-        const url = (process.env.NODE_ENV == "production") ? process.env["SITE_URL"] : "http://localhost:3000";
+        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         const remember = document.getElementById("remember").checked;
         const _this = this;
         fetch(url + '/api/login', {
@@ -27,15 +27,10 @@ class Login extends React.Component {
             return response.json();
         }).then(function (data) {
             if (data.status == "success") {
-                if (remember) {
-                    localStorage.setItem("token", data.token);
-                    localStorage.setItem("email", dataLogin.email);
-                    localStorage.setItem("userTypeId", data.userTypeId);
-                } else {
-                    sessionStorage.setItem("token", data.token);
-                    sessionStorage.setItem("email", dataLogin.email);
-                    sessionStorage.setItem("userTypeId", data.userTypeId);
-                }
+                const saveIn = remember ? localStorage : sessionStorage;
+                saveIn.setItem("token", data.token);
+                saveIn.setItem("email", dataLogin.email);
+                saveIn.setItem("userTypeId", data.userTypeId);
                 window.location.href = "/";
             } else {
                 _this.setState({ error: true })

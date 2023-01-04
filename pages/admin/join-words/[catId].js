@@ -18,7 +18,7 @@ class JoinWords extends React.Component {
         };
 
         const _this = this;
-        const url = (process.env.NODE_ENV == "production") ? process.env["SITE_URL"] : "http://localhost:3000";
+        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         fetch(url + '/api/admin/join-words?cat=' + this.state.catId)
             .then(function (response) {
                 return response.json();

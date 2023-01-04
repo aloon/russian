@@ -17,7 +17,7 @@ class ContentCategory extends React.Component {
     componentDidMount() {
 
         const _this = this;
-        const url = (process.env.NODE_ENV == "production") ? process.env["SITE_URL"] : "http://localhost:3000";
+        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
 
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
