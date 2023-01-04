@@ -30,7 +30,7 @@ class HomeAdmin extends React.Component {
             <Link href="/admin/join-words/categories">Categories in join words</Link>
           </li>
           <li>
-            <Link href="/admin/users/">Users</Link>
+            <Link href="/admin/users/">Users WIP </Link>
           </li>
         </ul>
       </>
