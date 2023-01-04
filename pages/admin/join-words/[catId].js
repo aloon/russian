@@ -105,7 +105,7 @@ export default function JoinWordsAdmin() {
     return (
         <div>
             <main>
-                <Link href={"/admin/categories"}>Back</Link>
+                <Link href={"/admin/join-words/categories"}>Back</Link>
                 <Title catId={catId} />
                 <JoinWords catId={catId} />
             </main>

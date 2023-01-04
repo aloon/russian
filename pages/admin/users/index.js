@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react';
-import Login from '../login'
+import Login from '../../login'
 
-class HomeAdmin extends React.Component {
+class UsersAdmin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,19 +23,12 @@ class HomeAdmin extends React.Component {
 
         return (
             <>
-                <Link href={"/"}>Back</Link>
-                <ul>
-                    <li>
-                        <Link href="/admin/join-words/categories">Categories in join words</Link>
-                    </li>
-                    <li>
-                        <Link href="/admin/users/">Users</Link>
-                    </li>
-                </ul>
+                <Link href={"/admin/"}>Back</Link>
+              
             </>
         )
     }
 
 }
 
-export default HomeAdmin
+export default UsersAdmin

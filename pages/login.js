@@ -4,7 +4,11 @@ import 'bootstrap/dist/css/bootstrap.css'
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            error: false
+        };
     }
+
     signIn() {
         const dataLogin = {
             email: document.getElementById("email").value,
@@ -12,6 +16,7 @@ class Login extends React.Component {
         }
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         const remember = document.getElementById("remember").checked;
+        const _this = this;
         fetch(url + '/api/login', {
             method: 'POST',
             headers: new Headers({
@@ -25,13 +30,15 @@ class Login extends React.Component {
                 if (remember) {
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("email", dataLogin.email);
+                    localStorage.setItem("userTypeId", data.userTypeId);
                 } else {
                     sessionStorage.setItem("token", data.token);
                     sessionStorage.setItem("email", dataLogin.email);
+                    sessionStorage.setItem("userTypeId", data.userTypeId);
                 }
                 window.location.href = "/";
             } else {
-                alert(data.message);
+                _this.setState({ error: true })
             }
         })
     }
@@ -53,12 +60,16 @@ class Login extends React.Component {
                             <div className="col d-flex">
                                 <div className="form-check">
                                     <input className="form-check-input" type="checkbox" value="" id="remember" />
-                                    <label className="form-check-label" for="remember"> Remember me </label>
+                                    <label className="form-check-label" htmlFor="remember"> Remember me </label>
                                 </div>
                             </div>
                         </div>
 
                         <button type="button" className="btn btn-primary btn-block mb-4" onClick={() => this.signIn()}>Sign in</button>
+
+                        {this.state.error &&
+                            <div class="alert alert-danger" role="alert">Wrong email or password</div>
+                        }
 
                     </form>
                 </section>

@@ -1,6 +1,26 @@
 import conn from "../../../lib/db";
 
 export default function handler(req, res) {
+    const token = req.headers.token;
+    const jwt = require('jsonwebtoken');
+    let jwtPassw = (process.env.NODE_ENV == "production") ? process.env["JWT_PASS"] : "XXX"
+    jwt.verify(token, jwtPassw, function (err, decoded) {
+        if (err) {
+            return res.status(401).json({ status: "error", message: "Wrong token" });
+        }
+        const email = decoded.email;
+        const query = `select * from users where email=$1`;
+        conn.query(query, [email], (err, result) => {
+            if (result.rows.length == 0) {
+                return res.status(401).json({ status: "error", message: "Wrong token" });
+            } else {
+                if (result.rows[0].user_type_id != 1) {
+                    return res.status(401).json({ status: "error", message: "Wrong token" });
+                }
+            }
+        });
+    });
+
     const queryAllCats = `select c.id,c.name, sum(case when jw.category_id is null then 0 else 1 end) as counts
     from categories as c
     left join join_words as jw 

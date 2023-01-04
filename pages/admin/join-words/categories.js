@@ -1,27 +1,47 @@
 import React from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
+import Login from '../../login'
 
 class ContentCategory extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            categories: []
+            categories: [],
+            isLoggedIn: false,
+            userTypeId: 0
         };
+    }
 
-        const t = this;
+    componentDidMount() {
+
+        const _this = this;
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
-        fetch(url + '/api/admin/categories')
-            .then(function (response) {
-                return response.json();
-            }).then(function (data) {
-                t.setState({ categories: data })
-            });
+
+        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
+
+        this.setState({
+            isLoggedIn: token,
+            userTypeId: userTypeId
+        })
+
+        fetch(url + '/api/admin/categories', {
+            headers: {
+                'token': token
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            _this.setState({ categories: data })
+        }).catch(function (error) {
+            _this.setState({ isLoggedIn: false })
+        });
     }
 
     add(e) {
-        const t = this;
+        const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
             fetch('/api/admin/categories', {
@@ -35,13 +55,14 @@ class ContentCategory extends React.Component {
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
-                t.setState({ categories: data })
+                _this.setState({ categories: data })
                 document.getElementById('new_cat').value = "";
             });
         }
     }
 
     render() {
+        if (!this.state.isLoggedIn) return (<Login />)
         return (<>
             <table className="table">
                 <thead>
