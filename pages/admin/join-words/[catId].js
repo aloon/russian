@@ -3,6 +3,7 @@ import Title from './title';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { url_site } from '../../../lib/contants';
+import Back from '../../../lib/back';
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
@@ -105,7 +106,7 @@ export default function JoinWordsAdmin() {
     return (
         <div>
             <main>
-                <Link href={"/admin/join-words/categories"}>Back</Link>
+                <Back href={"/admin/join-words/categories"} />
                 <Title catId={catId} />
                 <JoinWords catId={catId} />
             </main>

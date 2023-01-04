@@ -5,6 +5,7 @@ import Link from 'next/link';
 import 'bootstrap/dist/css/bootstrap.css'
 import { useRouter } from 'next/router'
 import { JoinWordsStatus, url_site } from '../../lib/contants';
+import Back from '../../lib/back';
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
@@ -196,7 +197,7 @@ export default function JoinWords() {
     return (
         <div>
             <main>
-                <Link href={"/join-words/categories"}>Back</Link>
+                <Back href={"/join-words/categories"} />
                 <Title value={"Join Words"} />
                 <Game catId={catId} />
             </main>

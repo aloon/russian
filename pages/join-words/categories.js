@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
 import { url_site } from '../../lib/contants';
-
+import Back from '../../lib/back';
 
 class JoinWordsCategories extends React.Component {
     constructor(props) {
@@ -39,7 +39,7 @@ export default function IndexJoinWords() {
     return (
         <div>
             <main>
-                <Link href={"/"}>Back</Link>
+                <Back href={"/"} />
                 <JoinWordsCategories />
             </main>
             <footer>
