@@ -4,17 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import 'bootstrap/dist/css/bootstrap.css'
 import { useRouter } from 'next/router'
+import { JoinWordsStatus, url_site } from '../../lib/contants';
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
     return { props: { catId: catId } }
-}
-
-const JoinWordsStatus = {
-    Unchecked: 0,
-    Pre: 1,
-    Ok: 2,
-    Ko: 3
 }
 
 function Title(props) {
@@ -67,8 +61,8 @@ class Game extends React.Component {
 
     componentDidMount() {
         const _this = this;
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
-        fetch(url + "/api/join-words/" + this.state.catId)
+        //const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
+        fetch(url_site + "/api/join-words/" + this.state.catId)
             .then((res) => res.json())
             .then((data) => data.map((col) => col
                 .sort(() => (Math.random() > 0.5) ? 1 : -1)
