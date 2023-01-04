@@ -14,7 +14,7 @@ class Login extends React.Component {
             email: document.getElementById("email").value,
             password: document.getElementById("pass").value
         }
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
+        const url = (process.env.NODE_ENV == "production") ? process.env["SITE_URL"] : "http://localhost:3000";
         const remember = document.getElementById("remember").checked;
         const _this = this;
         fetch(url + '/api/login', {

@@ -12,7 +12,7 @@ class JoinWordsCategories extends React.Component {
     }
 
     componentDidMount() {
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
+        const url = (process.env.NODE_ENV == "production") ? process.env["SITE_URL"] : "http://localhost:3000";
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
         fetch(url + '/api/join-words/categories', {
