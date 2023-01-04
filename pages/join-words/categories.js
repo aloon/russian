@@ -13,8 +13,13 @@ class JoinWordsCategories extends React.Component {
 
     componentDidMount() {
         const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
-        fetch(url + '/api/join-words/categories')
-            .then(response => response.json())
+        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
+        fetch(url + '/api/join-words/categories', {
+            headers: {
+                'token': token
+            }
+        }).then(response => response.json())
             .then(data => this.setState({ categories: data }));
     }
 
