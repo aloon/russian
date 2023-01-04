@@ -3,7 +3,7 @@ import conn from "../../../lib/db";
 export default function handler(req, res) {
     const token = req.headers.token;
     const jwt = require('jsonwebtoken');
-    let jwtPassw = (process.env.NODE_ENV == "production") ? process.env["JWT_PASS"] : "XXX"
+    let jwtPassw = (process.env.NODE_ENV == "production") ? process.env["JWT_PASSW"] : "XXX"
     jwt.verify(token, jwtPassw, function (err, decoded) {
         if (err) {
             return res.status(401).json({ status: "error", message: "Wrong token" });
