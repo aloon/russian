@@ -207,7 +207,7 @@ export default function JoinWords() {
                     </div>
                 </div>
                 <Title value={"Join Words"} />
-                <Game catId={catId} key="game" />
+                <Game catId={catId} />
             </main>
             <footer>
             </footer>
