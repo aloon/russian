@@ -153,7 +153,7 @@ class Game extends React.Component {
             - si es diferente -> nok
         */
 
-        const status = structuredClone(this.state.status);        
+        const status = structuredClone(this.state.status);
         if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
             if (!this.anySelectedElement()) {
@@ -164,11 +164,11 @@ class Game extends React.Component {
                 status[col][pos].status = JoinWordsStatus.Unchecked;
             } else if (this.onePreSelectedElementInOtherCol(col)) {
                 const otherPos = this.otherPos(col);
-                const result = this.isOk(col, pos) ? JoinWordsStatus.Ok : JoinWordsStatus.Ko;
-                this.childrenRefs[col][pos].current.setState({ status: result });
-                status[col][pos].status = result;
-                this.childrenRefs[otherCol][otherPos].current.setState({ status: result });
-                status[otherCol][otherPos].status = result;
+                const statusResult = this.isOk(col, pos) ? JoinWordsStatus.Ok : JoinWordsStatus.Ko;
+                this.childrenRefs[col][pos].current.setState({ status: statusResult });
+                status[col][pos].status = statusResult;
+                this.childrenRefs[otherCol][otherPos].current.setState({ status: statusResult });
+                status[otherCol][otherPos].status = statusResult;
             }
             this.setState({ status: status });
         }
@@ -197,9 +197,17 @@ export default function JoinWords() {
     return (
         <div>
             <main>
-                <Back href={"/join-words/categories"} />
+                <div className="d-flex justify-content-between bd-highlight mb-2">
+                    <div className="p-2 bd-highlight"><Back href={"/join-words/categories"} /></div>
+                    <div className="btn btn-outline-primary p-3 bd-highlight m-3" onClick={()=>location.reload()}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                            <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                        </svg>
+                    </div>
+                </div>
                 <Title value={"Join Words"} />
-                <Game catId={catId} />
+                <Game catId={catId} key="game" />
             </main>
             <footer>
             </footer>
