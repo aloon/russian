@@ -27,10 +27,10 @@ class Login extends React.Component {
             return response.json();
         }).then(function (data) {
             if (data.status == "success") {
-                const saveIn = remember ? localStorage : sessionStorage;
-                saveIn.setItem("token", data.token);
-                saveIn.setItem("email", dataLogin.email);
-                saveIn.setItem("userTypeId", data.userTypeId);
+                const clientStorage = remember ? localStorage : sessionStorage;
+                clientStorage.setItem("token", data.token);
+                clientStorage.setItem("email", dataLogin.email);
+                clientStorage.setItem("userTypeId", data.userTypeId);
                 window.location.href = "/";
             } else {
                 _this.setState({ error: true })

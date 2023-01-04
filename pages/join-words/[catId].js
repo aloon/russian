@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
     return { props: { catId: catId } }
 }
 
-const Status = {
+const JoinWordsStatus = {
     Unchecked: 0,
     Pre: 1,
     Ok: 2,
@@ -27,7 +27,7 @@ class WordElement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: Status.Unchecked,
+            status: JoinWordsStatus.Unchecked,
             element: props.word
         };
     }
@@ -39,16 +39,16 @@ class WordElement extends React.Component {
     render() {
         let clazz = "";
         switch (this.state.status) {
-            case Status.Unchecked:
+            case JoinWordsStatus.Unchecked:
                 clazz = "p-3 bg-light border";
                 break;
-            case Status.Pre:
+            case JoinWordsStatus.Pre:
                 clazz = "p-3 bg-warning border";
                 break;
-            case Status.Ok:
+            case JoinWordsStatus.Ok:
                 clazz = "p-3 bg-success border";
                 break;
-            case Status.Ko:
+            case JoinWordsStatus.Ko:
                 clazz = "p-3 bg-danger border";
                 break;
         }
@@ -73,7 +73,7 @@ class Game extends React.Component {
             .then((data) => data.map((col) => col
                 .sort(() => (Math.random() > 0.5) ? 1 : -1)
                 .map((item) => {
-                    return { id: item.id, word: item.word, status: Status.Unchecked }
+                    return { id: item.id, word: item.word, status: JoinWordsStatus.Unchecked }
                 }))
             ).then(function (data) {
                 _this.setState({ status: data, catId: _this.state.catId })
@@ -85,7 +85,7 @@ class Game extends React.Component {
         let any = false;
         this.state.status.forEach((col) => {
             col.forEach((item) => {
-                if (item.status != Status.Unchecked && item.status != Status.Ko && item.status != Status.Ok) {
+                if (item.status != JoinWordsStatus.Unchecked && item.status != JoinWordsStatus.Ko && item.status != JoinWordsStatus.Ok) {
                     any = true;
                 }
             });
@@ -96,7 +96,7 @@ class Game extends React.Component {
     anySelectedElementInCol(col) {
         let any = false;
         this.state.status[col].forEach((item) => {
-            if (item.status == Status.Pre) {
+            if (item.status == JoinWordsStatus.Pre) {
                 any = true;
             }
         });
@@ -104,14 +104,14 @@ class Game extends React.Component {
     }
 
     isPreSelectedElement(col, pos) {
-        return this.state.status[col][pos].status == Status.Pre;
+        return this.state.status[col][pos].status == JoinWordsStatus.Pre;
     }
 
     onePreSelectedElementInOtherCol(col) {
         const otherCol = (col == 0) ? 1 : 0;
         let any = false;
         this.state.status[otherCol].forEach((item) => {
-            if (item.status == Status.Pre) {
+            if (item.status == JoinWordsStatus.Pre) {
                 any = true;
             }
         });
@@ -122,7 +122,7 @@ class Game extends React.Component {
         const otherCol = (col == 0) ? 1 : 0;
         let otherPos = -1;
         this.state.status[otherCol].forEach((item, i) => {
-            if (item.status == Status.Pre) {
+            if (item.status == JoinWordsStatus.Pre) {
                 otherPos = i;
             }
         });
@@ -132,7 +132,7 @@ class Game extends React.Component {
     otherPosSameCol(col) {
         let otherPos = -1;
         this.state.status[col].forEach((item, i) => {
-            if (item.status == Status.Pre) {
+            if (item.status == JoinWordsStatus.Pre) {
                 otherPos = i;
             }
         });
@@ -143,7 +143,7 @@ class Game extends React.Component {
         const otherCol = (col == 0) ? 1 : 0;
         let otherPos = -1;
         this.state.status[otherCol].forEach((item, i) => {
-            if (item.status == Status.Pre) {
+            if (item.status == JoinWordsStatus.Pre) {
                 otherPos = i;
             }
         });
@@ -159,18 +159,18 @@ class Game extends React.Component {
             - si es diferente -> nok
         */
 
-        const status = structuredClone(this.state.status);
-        if (status[col][pos].status == Status.Unchecked) {
+        const status = structuredClone(this.state.status);        
+        if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
             if (!this.anySelectedElement()) {
-                this.childrenRefs[col][pos].current.setState({ status: Status.Pre });
-                status[col][pos].status = Status.Pre;
+                this.childrenRefs[col][pos].current.setState({ status: JoinWordsStatus.Pre });
+                status[col][pos].status = JoinWordsStatus.Pre;
             } else if (this.isPreSelectedElement(col, pos)) {
-                this.childrenRefs[col][pos].current.setState({ status: Status.Unchecked });
-                status[col][pos].status = Status.Unchecked;
+                this.childrenRefs[col][pos].current.setState({ status: JoinWordsStatus.Unchecked });
+                status[col][pos].status = JoinWordsStatus.Unchecked;
             } else if (this.onePreSelectedElementInOtherCol(col)) {
                 const otherPos = this.otherPos(col);
-                const result = this.isOk(col, pos) ? Status.Ok : Status.Ko;
+                const result = this.isOk(col, pos) ? JoinWordsStatus.Ok : JoinWordsStatus.Ko;
                 this.childrenRefs[col][pos].current.setState({ status: result });
                 status[col][pos].status = result;
                 this.childrenRefs[otherCol][otherPos].current.setState({ status: result });
