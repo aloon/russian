@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
 import Login from '../../login'
-import { url_site } from '../../lib/contants';
+import { url_site } from '../../../lib/contants';
 
 class ContentCategory extends React.Component {
     constructor(props) {
