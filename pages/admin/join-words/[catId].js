@@ -50,6 +50,7 @@ class JoinWords extends React.Component {
             });
         }
     }
+    
     delete(id) {
         const _this = this;
         fetch(url_site + '/api/admin/join-words?id=' + id + "&cat=" + this.state.catId, {
