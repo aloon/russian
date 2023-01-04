@@ -61,7 +61,6 @@ class Game extends React.Component {
 
     componentDidMount() {
         const _this = this;
-        //const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         fetch(url_site + "/api/join-words/" + this.state.catId)
             .then((res) => res.json())
             .then((data) => data.map((col) => col

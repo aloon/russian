@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
+import { url_site } from '../../lib/contants';
 
 class Login extends React.Component {
     constructor(props) {
@@ -14,10 +15,9 @@ class Login extends React.Component {
             email: document.getElementById("email").value,
             password: document.getElementById("pass").value
         }
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         const remember = document.getElementById("remember").checked;
         const _this = this;
-        fetch(url + '/api/login', {
+        fetch(url_site + '/api/login', {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8'

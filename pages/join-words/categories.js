@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
+import { url_site } from '../../lib/contants';
 
 
 class JoinWordsCategories extends React.Component {
@@ -12,10 +13,9 @@ class JoinWordsCategories extends React.Component {
     }
 
     componentDidMount() {
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
-        fetch(url + '/api/join-words/categories', {
+        fetch(url_site + '/api/join-words/categories', {
             headers: {
                 'token': token
             }

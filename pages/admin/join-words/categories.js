@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
 import Login from '../../login'
+import { url_site } from '../../lib/contants';
 
 class ContentCategory extends React.Component {
     constructor(props) {
@@ -17,7 +18,6 @@ class ContentCategory extends React.Component {
     componentDidMount() {
 
         const _this = this;
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
 
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
@@ -27,7 +27,7 @@ class ContentCategory extends React.Component {
             userTypeId: userTypeId
         })
 
-        fetch(url + '/api/admin/categories', {
+        fetch(url_site + '/api/admin/categories', {
             headers: {
                 'token': token
             }
@@ -44,7 +44,7 @@ class ContentCategory extends React.Component {
         const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
-            fetch('/api/admin/categories', {
+            fetch(url_site + '/api/admin/categories', {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json; charset=UTF-8'

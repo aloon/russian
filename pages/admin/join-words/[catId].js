@@ -2,6 +2,7 @@ import React from 'react';
 import Title from './title';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
+import { url_site } from '../../../lib/contants';
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
@@ -18,8 +19,7 @@ class JoinWords extends React.Component {
         };
 
         const _this = this;
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
-        fetch(url + '/api/admin/join-words?cat=' + this.state.catId)
+        fetch(url_site + '/api/admin/join-words?cat=' + this.state.catId)
             .then(function (response) {
                 return response.json();
             }).then(function (data) {
@@ -31,7 +31,7 @@ class JoinWords extends React.Component {
         const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
-            fetch('/api/admin/join-words?cat=' + this.state.catId, {
+            fetch(url_site + '/api/admin/join-words?cat=' + this.state.catId, {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json; charset=UTF-8'
@@ -51,7 +51,7 @@ class JoinWords extends React.Component {
     }
     delete(id) {
         const _this = this;
-        fetch('/api/admin/join-words?id=' + id + "&cat=" + this.state.catId, {
+        fetch(url_site + '/api/admin/join-words?id=' + id + "&cat=" + this.state.catId, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8'

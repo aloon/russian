@@ -1,5 +1,6 @@
 import { withRouter } from 'next/router';
 import React from 'react';
+import { url_site } from '../../../lib/contants';
 
 class Title extends React.Component {
 
@@ -10,8 +11,7 @@ class Title extends React.Component {
         };
 
         const _this = this;
-        const url = (process.env.NODE_ENV == "production") ? "https://russian.fly.dev" : "http://localhost:3000";
-        fetch(url + '/api/admin/category?cat=' + props.catId)
+        fetch(url_site + '/api/admin/category?cat=' + props.catId)
             .then(function (response) {
                 return response.json();
             }).then(function (data) {
