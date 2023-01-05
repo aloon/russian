@@ -1,7 +1,7 @@
 // https://es.reactjs.org/tutorial/tutorial.html
 
 import React from 'react';
-import Link from 'next/link';
+import {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import { useRouter } from 'next/router'
 import { JoinWordsStatus, url_site } from '../../lib/contants';
@@ -194,12 +194,18 @@ class Game extends React.Component {
 export default function JoinWords() {
     const router = useRouter()
     const { catId } = router.query
+    const [seed, setSeed] = useState(1);
+
+    const reload = () => {
+        setSeed(Math.random());
+    }
+
     return (
         <div>
             <main>
                 <div className="d-flex justify-content-between bd-highlight mb-2">
                     <div className="p-2 bd-highlight"><Back href={"/join-words/categories"} /></div>
-                    <div className="btn btn-outline-primary p-3 bd-highlight m-3" onClick={()=>location.reload()}>
+                    <div className="btn btn-outline-primary p-3 bd-highlight m-3" onClick={reload}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
                             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
@@ -207,7 +213,7 @@ export default function JoinWords() {
                     </div>
                 </div>
                 <Title value={"Join Words"} />
-                <Game catId={catId} />
+                <Game catId={catId} key={seed} />
             </main>
             <footer>
             </footer>
