@@ -1,37 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
 import { url_site } from '../../lib/contants';
 import Back from '../../lib/back';
+import Login from '../login'
 
-class JoinWordsCategories extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            categories: []
-        };
-    }
+const JoinWordsCategories = () => {
 
-    componentDidMount() {
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-        const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
-        fetch(url_site + '/api/join-words/categories', {
-            headers: {
-                'token': token
-            }
-        }).then(response => response.json())
-            .then(data => this.setState({ categories: data }));
-    }
+    const [categories, setCategories] = useState([]);
+    const [token, setToken] = useState(null);
 
-    render() {
-        return (<>
+    useEffect(() => {
+        setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
+        if (token != null) {
+            fetch(url_site + '/api/join-words/categories', {
+                headers: {
+                    'token': token
+                }
+            }).then(response => response.json())
+                .then(data => setCategories(data));
+        }
+    }, [token])
+
+    if (token == null)
+        return (<Login />)
+    else
+        return (
             <ul className="list-group">
-                {this.state.categories.map((category) => (
+                {categories.map((category) => (
                     <li className="list-group-item text-center" key={"l" + category.id}><Link href={"/join-words/" + category.id} key={"c" + category.id}>{category.word}</Link></li>
                 ))}
             </ul>
-        </>);
-    }
+        );
+
 }
 
 export default function IndexJoinWords() {

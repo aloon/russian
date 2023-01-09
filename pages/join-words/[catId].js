@@ -1,7 +1,7 @@
 // https://es.reactjs.org/tutorial/tutorial.html
 
 import React from 'react';
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import { useRouter } from 'next/router'
 import { JoinWordsStatus, url_site } from '../../lib/contants';
@@ -51,33 +51,38 @@ class WordElement extends React.Component {
     }
 }
 
-class Game extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            status: [[], []],
-            catId: props.catId
-        }
-    }
+const Game = (props) => {
 
-    componentDidMount() {
+    const [status, setStatus] = useState([[], []]);
+    const [catId, setCatId] = useState(props.catId);
+    const [childrenRefs, setChildrenRefs] = useState([[], []]);
+    const [token, setToken] = useState(null);
+
+    useEffect(() => {
+        setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
         const _this = this;
-        fetch(url_site + "/api/join-words/" + this.state.catId)
-            .then((res) => res.json())
-            .then((data) => data.map((col) => col
-                .sort(() => (Math.random() > 0.5) ? 1 : -1)
-                .map((item) => {
-                    return { id: item.id, word: item.word, status: JoinWordsStatus.Unchecked }
-                }))
-            ).then(function (data) {
-                _this.setState({ status: data, catId: _this.state.catId })
-                _this.childrenRefs = data.map((c) => c.map((e) => React.createRef()));
-            });
-    }
+        if (token != null) {
+            fetch(url_site + "/api/join-words/" + catId, {
+                headers: {
+                    'token': token
+                }
+            })
+                .then((res) => res.json())
+                .then((data) => data.map((col) => col
+                    .sort(() => (Math.random() > 0.5) ? 1 : -1)
+                    .map((item) => {
+                        return { id: item.id, word: item.word, status: JoinWordsStatus.Unchecked }
+                    }))
+                ).then(function (data) {
+                    setStatus(data);
+                    setChildrenRefs(data.map((c) => c.map((e) => React.createRef())))
+                });
+        }
+    }, [token])
 
-    anySelectedElement() {
+    function anySelectedElement() {
         let any = false;
-        this.state.status.forEach((col) => {
+        status.forEach((col) => {
             col.forEach((item) => {
                 if (item.status != JoinWordsStatus.Unchecked && item.status != JoinWordsStatus.Ko && item.status != JoinWordsStatus.Ok) {
                     any = true;
@@ -87,9 +92,14 @@ class Game extends React.Component {
         return any;
     }
 
-    anySelectedElementInCol(col) {
+    function isPreSelectedElement(col, pos) {
+        return status[col][pos].status == JoinWordsStatus.Pre;
+    }
+
+    function onePreSelectedElementInOtherCol(col) {
+        const otherCol = (col == 0) ? 1 : 0;
         let any = false;
-        this.state.status[col].forEach((item) => {
+        status[otherCol].forEach((item) => {
             if (item.status == JoinWordsStatus.Pre) {
                 any = true;
             }
@@ -97,54 +107,39 @@ class Game extends React.Component {
         return any;
     }
 
-    isPreSelectedElement(col, pos) {
-        return this.state.status[col][pos].status == JoinWordsStatus.Pre;
-    }
-
-    onePreSelectedElementInOtherCol(col) {
+    function otherPos(col) {
         const otherCol = (col == 0) ? 1 : 0;
-        let any = false;
-        this.state.status[otherCol].forEach((item) => {
+        let oPos = -1;
+        status[otherCol].forEach((item, i) => {
             if (item.status == JoinWordsStatus.Pre) {
-                any = true;
+                oPos = i;
             }
         });
-        return any;
+        return oPos;
     }
 
-    otherPos(col) {
+    function otherPosSameCol(col) {
+        let oPos = -1;
+        status[col].forEach((item, i) => {
+            if (item.status == JoinWordsStatus.Pre) {
+                oPos = i;
+            }
+        });
+        return oPos;
+    }
+
+    function isOk(col, pos) {
         const otherCol = (col == 0) ? 1 : 0;
         let otherPos = -1;
-        this.state.status[otherCol].forEach((item, i) => {
+        status[otherCol].forEach((item, i) => {
             if (item.status == JoinWordsStatus.Pre) {
                 otherPos = i;
             }
         });
-        return otherPos;
+        return status[col][pos].id == status[otherCol][otherPos].id;
     }
 
-    otherPosSameCol(col) {
-        let otherPos = -1;
-        this.state.status[col].forEach((item, i) => {
-            if (item.status == JoinWordsStatus.Pre) {
-                otherPos = i;
-            }
-        });
-        return otherPos;
-    }
-
-    isOk(col, pos) {
-        const otherCol = (col == 0) ? 1 : 0;
-        let otherPos = -1;
-        this.state.status[otherCol].forEach((item, i) => {
-            if (item.status == JoinWordsStatus.Pre) {
-                otherPos = i;
-            }
-        });
-        return this.state.status[col][pos].id == this.state.status[otherCol][otherPos].id;
-    }
-
-    handleClick(col, item, pos) {
+    function handleClick(col, item, pos) {
         /* 
         - ningun elemento seleccionado en ninguna columna -> seleccionano pre
         - click un elemento seleccionado con pre -> deseleccionar
@@ -153,42 +148,40 @@ class Game extends React.Component {
             - si es diferente -> nok
         */
 
-        const status = structuredClone(this.state.status);
+        //const status = structuredClone(status);
         if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
-            if (!this.anySelectedElement()) {
-                this.childrenRefs[col][pos].current.setState({ status: JoinWordsStatus.Pre });
+            if (!anySelectedElement()) {
+                childrenRefs[col][pos].current.setState({ status: JoinWordsStatus.Pre });
                 status[col][pos].status = JoinWordsStatus.Pre;
-            } else if (this.isPreSelectedElement(col, pos)) {
-                this.childrenRefs[col][pos].current.setState({ status: JoinWordsStatus.Unchecked });
+            } else if (isPreSelectedElement(col, pos)) {
+                childrenRefs[col][pos].current.setState({ status: JoinWordsStatus.Unchecked });
                 status[col][pos].status = JoinWordsStatus.Unchecked;
-            } else if (this.onePreSelectedElementInOtherCol(col)) {
-                const otherPos = this.otherPos(col);
-                const statusResult = this.isOk(col, pos) ? JoinWordsStatus.Ok : JoinWordsStatus.Ko;
-                this.childrenRefs[col][pos].current.setState({ status: statusResult });
+            } else if (onePreSelectedElementInOtherCol(col)) {
+                const oPos = otherPos(col);
+                const statusResult = isOk(col, pos) ? JoinWordsStatus.Ok : JoinWordsStatus.Ko;
+                childrenRefs[col][pos].current.setState({ status: statusResult });
                 status[col][pos].status = statusResult;
-                this.childrenRefs[otherCol][otherPos].current.setState({ status: statusResult });
-                status[otherCol][otherPos].status = statusResult;
+                childrenRefs[otherCol][oPos].current.setState({ status: statusResult });
+                status[otherCol][oPos].status = statusResult;
             }
-            this.setState({ status: status });
+            //this.setState({ status: status });
         }
     }
 
-    render() {
-        return (<div className="container px-4 text-center" key={"container"}>
-            <div className="row gx-5" key={"container2"}>
-                {[0, 1].map((col) => {
-                    return <div className="d-grid gap-3 col" key={"c" + col}>
-                        {this.state.status[col].map((item, pos) => <WordElement word={item}
-                            key={"c" + col + "i" + item.id}
-                            ref={this.childrenRefs[col][pos]}
-                            onClick={() => this.handleClick(col, item, pos)} />
-                        )}
-                    </div>
-                })}
-            </div>
-        </div>);
-    }
+    return (<div className="container px-4 text-center" key={"container"}>
+        <div className="row gx-5" key={"container2"}>
+            {[0, 1].map((col) => {
+                return <div className="d-grid gap-3 col" key={"c" + col}>
+                    {status[col].map((item, pos) => <WordElement word={item}
+                        key={"c" + col + "i" + item.id}
+                        ref={childrenRefs[col][pos]}
+                        onClick={() => handleClick(col, item, pos)} />
+                    )}
+                </div>
+            })}
+        </div>
+    </div>);
 }
 
 export default function JoinWords() {
