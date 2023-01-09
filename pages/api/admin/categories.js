@@ -8,9 +8,9 @@ export default function handler(req, res) {
         if (err) {
             return res.status(401).json({ status: "error", message: "Wrong token" });
         }
-        const email = decoded.email;
-        const query = `select * from users where email=$1`;
-        conn.query(query, [email], (err, result) => {
+        const userId = decoded.userId;
+        const query = `select * from users where id=$1`;
+        conn.query(query, [userId], (err, result) => {
             if (result.rows.length == 0) {
                 return res.status(401).json({ status: "error", message: "Wrong token" });
             } else {
