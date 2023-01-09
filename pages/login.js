@@ -27,7 +27,6 @@ const Login = () => {
                 const clientStorage = remember ? localStorage : sessionStorage;
                 clientStorage.setItem("token", data.token);
                 clientStorage.setItem("userTypeId", data.userTypeId);
-                clientStorage.setItem("userId", data.userId);
                 window.location.href = "/";
             } else {
                setError(true);
