@@ -30,9 +30,10 @@ const ContentCategory = () => {
             e.preventDefault();
             fetch(url_site + '/api/admin/categories', {
                 method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }),
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'token': token
+                },
                 body: JSON.stringify({
                     word: e.target.value
                 })
@@ -59,7 +60,7 @@ const ContentCategory = () => {
                 </thead>
                 <tbody>
                     {
-                        (categories || []).map((c, i) => {
+                        categories.map((c, i) => {
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
                                 <td><Link href={"/admin/join-words/" + c.id}>{c.word}</Link></td>
