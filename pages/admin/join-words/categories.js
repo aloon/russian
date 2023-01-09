@@ -1,47 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
 import Login from '../../login'
 import { url_site } from '../../../lib/contants';
 import Back from '../../../lib/back';
 
-class ContentCategory extends React.Component {
-    constructor(props) {
-        super(props);
+const ContentCategory = () => {
 
-        this.state = {
-            categories: [],
-            isLoggedIn: false,
-            userTypeId: 0
-        };
-    }
+    const [categories, setCategories] = useState([]);
+    const [token, setToken] = useState(null);
 
-    componentDidMount() {
+    useEffect(() => {
+        setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
+        if (token != null) {
+            fetch(url_site + '/api/admin/categories', {
+                headers: {
+                    'token': token
+                }
+            }).then(response => response.json())
+                .then(data => {setCategories(data)
+                    console.log(data)});
+        }
+    }, [token]);
 
-        const _this = this;
 
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-        const userTypeId = localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId");
-
-        this.setState({
-            isLoggedIn: token,
-            userTypeId: userTypeId
-        })
-
-        fetch(url_site + '/api/admin/categories', {
-            headers: {
-                'token': token
-            }
-        }).then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            _this.setState({ categories: data })
-        }).catch(function (error) {
-            _this.setState({ isLoggedIn: false })
-        });
-    }
-
-    add(e) {
+    function add(e) {
         const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
@@ -56,15 +39,16 @@ class ContentCategory extends React.Component {
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
-                _this.setState({ categories: data })
+                setCategories(data);
                 document.getElementById('new_cat').value = "";
             });
         }
     }
 
-    render() {
-        if (!this.state.isLoggedIn) return (<Login />)
-        return (<>
+    if (token == null)
+        return (<Login />)
+    else
+        return (
             <table className="table">
                 <thead>
                     <tr>
@@ -75,7 +59,7 @@ class ContentCategory extends React.Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.categories.map((c, i) => {
+                        (categories || []).map((c, i) => {
                             return <tr key={"t" + i}>
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
                                 <td><Link href={"/admin/join-words/" + c.id}>{c.word}</Link></td>
@@ -83,18 +67,17 @@ class ContentCategory extends React.Component {
                             </tr>
                         })}
                     <tr>
-                        <th scope="row">{this.state.categories.length + 1}</th>
+                        <th scope="row">{categories.length + 1}</th>
                         <td>
-                            <input type="text" className="form-control" placeholder="New Category" id='new_cat' onKeyUp={(e) => this.add(e)} />
+                            <input type="text" className="form-control" placeholder="New Category" id='new_cat' onKeyUp={(e) => add(e)} />
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </>);
-    }
+        );
 }
 
-export default function Categories() {
+export default function AdminCategories() {
     return (
         <div>
             <main>
