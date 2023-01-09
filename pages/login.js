@@ -1,16 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import { url_site } from '../lib/contants';
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: false
-        };
-    }
 
-    signIn() {
+const Login = () => {
+
+    const [error, setError] = useState(false);
+
+    function signIn() {
         const dataLogin = {
             email: document.getElementById("email").value,
             password: document.getElementById("pass").value
@@ -29,47 +26,46 @@ class Login extends React.Component {
             if (data.status == "success") {
                 const clientStorage = remember ? localStorage : sessionStorage;
                 clientStorage.setItem("token", data.token);
-                clientStorage.setItem("email", dataLogin.email);
                 clientStorage.setItem("userTypeId", data.userTypeId);
+                clientStorage.setItem("userId", data.userId);
                 window.location.href = "/";
             } else {
-                _this.setState({ error: true })
+               setError(true);
             }
         })
     }
 
-    render() {
-        return (<section className="pb-4 w-30">
-            <div className="bg-white border rounded-5 m-4">
-                <section className="p-4 d-flex justify-content-center pb-4">
-                    <form>
-                        <div className="form-outline mb-4">
-                            <input type="email" id="email" className="form-control" placeholder="email" />
-                        </div>
+    return (<section className="pb-4 w-30">
+        <div className="bg-white border rounded-5 m-4">
+            <section className="p-4 d-flex justify-content-center pb-4">
+                <form>
+                    <div className="form-outline mb-4">
+                        <input type="email" id="email" className="form-control" placeholder="email" />
+                    </div>
 
-                        <div className="form-outline mb-4">
-                            <input type="password" id="pass" className="form-control" placeholder="Password" />
-                        </div>
+                    <div className="form-outline mb-4">
+                        <input type="password" id="pass" className="form-control" placeholder="Password" />
+                    </div>
 
-                        <div className="row mb-4">
-                            <div className="col d-flex">
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="" id="remember" />
-                                    <label className="form-check-label" htmlFor="remember"> Remember me </label>
-                                </div>
+                    <div className="row mb-4">
+                        <div className="col d-flex">
+                            <div className="form-check">
+                                <input className="form-check-input" type="checkbox" value="" id="remember" />
+                                <label className="form-check-label" htmlFor="remember"> Remember me </label>
                             </div>
                         </div>
+                    </div>
 
-                        <button type="button" className="btn btn-primary btn-block mb-4" onClick={() => this.signIn()}>Sign in</button>
+                    <button type="button" className="btn btn-primary btn-block mb-4" onClick={() => signIn()}>Sign in</button>
 
-                        {this.state.error &&
-                            <div class="alert alert-danger" role="alert">Wrong email or password</div>
-                        }
+                    {error &&
+                        <div class="alert alert-danger" role="alert">Wrong email or password</div>
+                    }
 
-                    </form>
-                </section>
-            </div>
-        </section>)
-    }
+                </form>
+            </section>
+        </div>
+    </section>)
 }
+
 export default Login

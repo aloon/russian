@@ -9,7 +9,13 @@ export default function handler(req, res) {
         if (result.rows.length == 0) {
             return res.status(200).json({ status: "error", message: "Wrong email or password" });
         } else {
-            return res.status(200).json({ status: "success", userTypeId:result.rows[0].user_type_id,  token: jwt.sign({ email: result.rows[0].email }, jwtPassw) });
+            return res.status(200).json({ 
+                status: "success", 
+                userTypeId:result.rows[0].user_type_id,  
+                token: jwt.sign({ email: result.rows[0].email }, jwtPassw),
+                userId: result.rows[0].id,
+                rand: Math.random()            
+            });
         }
     })
 }
