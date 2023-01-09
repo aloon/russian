@@ -18,8 +18,7 @@ const ContentCategory = () => {
                     'token': token
                 }
             }).then(response => response.json())
-                .then(data => {setCategories(data)
-                    console.log(data)});
+                .then(data => setCategories(data));
         }
     }, [token]);
 
