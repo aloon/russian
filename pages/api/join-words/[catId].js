@@ -1,5 +1,5 @@
 import conn from "../../../lib/db";
-import { checkAuth, AuthError } from "../../../lib/auth";
+import { getAuthUserId, AuthError } from "../../../lib/auth";
 import { Role } from "../../../lib/constants";
 
 export default function handler(req, res) {
@@ -11,17 +11,13 @@ export default function handler(req, res) {
     ORDER BY RANDOM ()
     limit ${limit}`;
 
-    checkAuth(req.headers.token, accessTo)
+    getAuthUserId(req.headers.token, accessTo)
         .then(() => conn.query(queryWords, [req.query.catId]))
-        .then(result => {
-            return [0, 1].map((i) => {
-                return result.rows.map((w) => {
-                    return { "id": w.id, "word1": w.word1, "word2": w.word2 }
-                }).map((w) => {
-                    return { "id": w.id, "word": i == 0 ? w.word1 : w.word2 }
-                })
-            })
-        })
+        .then(result => [0, 1].map((i) => result.rows.map((w) => {
+            return { "id": w.id, "word1": w.word1, "word2": w.word2 }
+        }).map((w) => {
+            return { "id": w.id, "word": i == 0 ? w.word1 : w.word2 }
+        })))
         .then(results => res.status(200).json(results))
         .catch(err => {
             if (err instanceof AuthError) {
