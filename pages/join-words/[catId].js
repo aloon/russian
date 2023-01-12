@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import { useRouter } from 'next/router'
-import { JoinWordsStatus, url_site } from '../../lib/contants';
+import { JoinWordsStatus, url_site } from '../../lib/constants';
 import Back from '../../lib/back';
 
 export async function getServerSideProps(context) {

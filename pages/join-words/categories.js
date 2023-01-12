@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.css'
-import { url_site } from '../../lib/contants';
+import { url_site } from '../../lib/constants';
 import Back from '../../lib/back';
 import Login from '../login'
 

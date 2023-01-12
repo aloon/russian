@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
-import { url_site } from '../lib/contants';
+import { url_site } from '../lib/constants';
 
 
 const Login = () => {
