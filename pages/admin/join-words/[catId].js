@@ -2,7 +2,7 @@ import React from 'react';
 import Title from './title';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
-import { url_site } from '../../../lib/contants';
+import { url_site } from '../../../lib/constants';
 import Back from '../../../lib/back';
 
 export async function getServerSideProps(context) {

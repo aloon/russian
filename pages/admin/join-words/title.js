@@ -1,6 +1,6 @@
 import { withRouter } from 'next/router';
 import React from 'react';
-import { url_site } from '../../../lib/contants';
+import { url_site } from '../../../lib/constants';
 
 class Title extends React.Component {
 
