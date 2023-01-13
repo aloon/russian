@@ -1,6 +1,7 @@
 import conn from "../../../lib/db";
-import { getAuthUserId, AuthError } from "../../../lib/auth";
+import { getAuthUserId } from "../../../lib/auth";
 import { Role } from "../../../lib/constants";
+import { errorResponse } from "../../../lib/errorResponse";
 
 export default function handler(req, res) {
     const accessTo = Role.Gamer;
@@ -19,10 +20,5 @@ export default function handler(req, res) {
             return { "id": w.id, "word": i == 0 ? w.word1 : w.word2 }
         })))
         .then(results => res.status(200).json(results))
-        .catch(err => {
-            if (err instanceof AuthError) {
-                return res.status(401).json({ error: err.message });
-            }
-            return res.status(500).json({ error: err.message });
-        });
+        .catch(err => errorResponse(err, res));
 }
