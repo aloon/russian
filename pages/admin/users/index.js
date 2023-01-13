@@ -1,89 +1,108 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from '../../login'
 import Back from '../../../lib/back';
 import { url_site } from '../../../lib/constants';
 
-class Users extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
-    };
+const Users = () => {
 
-    const _this = this;
-    fetch(url_site + '/api/admin/users/index')
-        .then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            _this.setState({ users: data })
+  const urlApiUsers = url_site + '/api/admin/users';
+  const [users, setUsers] = useState([]);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
+    if (token != null) {
+      fetch(urlApiUsers, {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'token': token
+        }
+      })
+        .then((response) => response.json())
+        .then(setUsers);
+    }
+  }, [token]);
+
+  const remove = (id) => {
+    fetch(urlApiUsers + '?id='+id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': token
+      }
+    }).then((response) => response.json())
+      .then(setUsers);
+  }
+
+  const add = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      fetch(urlApiUsers, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'token': token
+        },
+        body: JSON.stringify({
+          email: document.getElementById('email').value,
+          passwd: document.getElementById('password').value
+        })
+      }).then((response) => response.json())
+        .then((data) => {
+          setUsers(data);
+          document.getElementById('email').value = "";
+          document.getElementById('password').value = "";
         });
-
+    }
   }
 
-  render() {
-    return (<>
-        <table className="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">isAdmin</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    this.state.users.map((c, i) => {
-                        return <tr key={"t" + i}>
-                            <th scope="row" key={"th" + i}>{i + 1}</th>
-                            <td>{c.email}</td>
-                            <td>{c.isAdmin}</td>
-                            <td><button onClick={() => this.delete(c.id)}>Delete</button></td>
-                        </tr>
-                    })}
-                <tr>
-                    <th scope="row">{this.state.users.length + 1}</th>
-                    <td>
-                        <input type="text" className="form-control" placeholder="Email" id='email' onKeyUp={(e) => this.add(e)} />
-                    </td>
-                    <td>
-                        <input type="text" className="form-control" placeholder="Password" id='password' onKeyUp={(e) => this.add(e)} />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </>);
-}
+  return (
+    <table className="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          users.map((c, i) => {
+            return <tr key={"t" + i}>
+              <th scope="row" key={"th" + i}>{i + 1}</th>
+              <td>{c.email}</td>
+              <td><button onClick={() => remove(c.id)}>Delete</button></td>
+            </tr>
+          })}
+        <tr>
+          <th scope="row">{users.length + 1}</th>
+          <td>
+            <input type="text" className="form-control" placeholder="Email" id='email' onKeyUp={(e) => add(e)} />
+          </td>
+          <td>
+            <input type="text" className="form-control" placeholder="Password" id='password' onKeyUp={(e) => add(e)} />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  );
 
 }
 
-class UsersAdmin extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: false
-    };
-  }
+const UsersAdmin = () => {
+  const [token, setToken] = useState(null);
 
-  componentDidMount() {
-    this.setState({
-      isLoggedIn: localStorage.getItem("token") || sessionStorage.getItem("token"),
-      userTypeId: localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId")
-    })
-  }
+  useEffect(() => {
+    setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
+  }, [token]);
 
 
-  render() {
-    if (!this.state.isLoggedIn) return (<Login />)
-
-    return (
-      <>
-        <Back href={"/admin"} />
-        <Users />
-      </>
-    )
-  }
-
+  return (token == null) ? <Login /> : (
+    <>
+      <Back href={"/admin"} />
+      <Users />
+    </>
+  )
 }
 
 export default UsersAdmin

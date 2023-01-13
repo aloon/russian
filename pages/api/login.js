@@ -1,5 +1,4 @@
 import conn from '../../lib/db';
-import jwtPassw from '../../lib/constants';
 
 export default function handler(req, res) {
     const jwt = require('jsonwebtoken');
