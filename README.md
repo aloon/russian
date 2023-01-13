@@ -14,7 +14,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction)
+For now you can see the result in [https://russian.fly.dev/](https://russian.fly.dev/)
 
 ## Learn More Next.js
 
@@ -22,6 +22,7 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [API routes](https://nextjs.org/docs/api-routes/introduction) - learn about Next.js API routes and how to use them.
 
 ## Other docs
 
