@@ -17,14 +17,14 @@ const ContentCategory = () => {
                 headers: {
                     'token': token
                 }
-            }).then(response => response.json())
+            })
+                .then(response => response.json())
                 .then(data => setCategories(data));
         }
     }, [token]);
 
 
     function add(e) {
-        const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
             fetch(url_site + '/api/admin/categories', {
