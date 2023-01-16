@@ -1,42 +1,22 @@
-import Link from 'next/link'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from '../login'
 import Back from '../../lib/back';
+import PrettyList from '../../lib/prettyList'
 
-class HomeAdmin extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: false
-    };
-  }
+const HomeAdmin = () => {
 
-  componentDidMount() {
-    this.setState({
-      isLoggedIn: localStorage.getItem("token") || sessionStorage.getItem("token"),
-      userTypeId: localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId")
-    })
-  }
+  const [token, setToken] = useState(null);
 
+  useEffect(() => {
+    setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
+  })
 
-  render() {
-    if (!this.state.isLoggedIn) return (<Login />)
+  const items = [
+    { href: "/join-words/categories", text: "Categories in join words" },
+    { href: "/admin/users/", text: "Users" }
+  ]
 
-    return (
-      <>
-        <Back href={"/"} />
-        <ul>
-          <li>
-            <Link href="/admin/join-words/categories">Categories in join words</Link>
-          </li>
-          <li>
-            <Link href="/admin/users/">Users</Link>
-          </li>
-        </ul>
-      </>
-    )
-  }
-
+  return (token == null) ? <Login /> : <><Back href={"/"} /><PrettyList items={items} /></>
 }
 
 export default HomeAdmin
