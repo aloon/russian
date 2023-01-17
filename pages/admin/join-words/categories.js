@@ -81,8 +81,10 @@ export default function AdminCategories() {
     return (
         <div>
             <main>
-                <Back href={"/admin"} />
-                <ContentCategory />
+                <div className='p-2'>
+                    <Back href={"/admin"} />
+                    <ContentCategory />
+                </div>
             </main>
             <footer>
             </footer>

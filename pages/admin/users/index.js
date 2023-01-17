@@ -24,7 +24,7 @@ const Users = () => {
   }, [token]);
 
   const remove = (id) => {
-    fetch(urlApiUsers + '?id='+id, {
+    fetch(urlApiUsers + '?id=' + id, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -98,10 +98,16 @@ const UsersAdmin = () => {
 
 
   return (token == null) ? <Login /> : (
-    <>
-      <Back href={"/admin"} />
-      <Users />
-    </>
+    <div>
+      <main>
+        <div className='p-2'>
+          <Back href={"/admin"} />
+          <Users />
+        </div>
+      </main>
+      <footer>
+      </footer>
+    </div>
   )
 }
 

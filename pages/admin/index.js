@@ -12,11 +12,20 @@ const HomeAdmin = () => {
   })
 
   const items = [
-    { href: "/join-words/categories", text: "Categories in join words" },
+    { href: "/admin/join-words/categories", text: "Categories in join words" },
     { href: "/admin/users/", text: "Users" }
   ]
 
-  return (token == null) ? <Login /> : <><Back href={"/"} /><PrettyList items={items} /></>
+  return (token == null) ? <Login /> : <div>
+  <main>
+      <div className='p-2'>
+      <Back href={"/"} />
+      <PrettyList items={items} />
+      </div>
+  </main>
+  <footer>
+  </footer>
+</div>
 }
 
 export default HomeAdmin

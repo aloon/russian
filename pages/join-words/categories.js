@@ -24,14 +24,18 @@ const JoinWordsCategories = () => {
 
     if (token == null)
         return (<Login />)
-    else
+    else {
+        const list = categories.map((category) => {
+            return {href: "/join-words/" + category.id, text: category.word}
+        });
         return (
             <ul className="list-group">
                 {categories.map((category) => (
-                    <li className="list-group-item text-center" key={"l" + category.id}><Link href={"/join-words/" + category.id} key={"c" + category.id}>{category.word}</Link></li>
+                    <Link href={"/join-words/" + category.id} key={"c" + category.id} style={{textDecoration: 'none'}}><li className="list-group-item text-center" key={"l" + category.id}>{category.word}</li></Link>
                 ))}
             </ul>
         );
+    }
 
 }
 
@@ -40,8 +44,10 @@ export default function IndexJoinWords() {
     return (
         <div>
             <main>
+                <div className='p-2'>
                 <Back href={"/"} />
                 <JoinWordsCategories />
+                </div>
             </main>
             <footer>
             </footer>

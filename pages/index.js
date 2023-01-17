@@ -11,11 +11,11 @@ const Home = () => {
   useEffect(() => {
     setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
     setUserTypeId(localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId"));
-  })
+  }, [])
 
-  const items = [{href: "/join-words/categories", text: "Join Words"}]
+  const items = [{ href: "/join-words/categories", text: "Join Words" }]
   if (userTypeId == 1) {
-    items.push({href: "/admin", text: "Admin"})
+    items.push({ href: "/admin", text: "Admin" })
   }
 
   return (token == null) ? <Login /> : <PrettyList items={items} />
