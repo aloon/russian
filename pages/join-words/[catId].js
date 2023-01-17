@@ -58,9 +58,8 @@ const Game = (props) => {
 
     useEffect(() => {
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
-        const _this = this;
         if (token != null) {
-            fetch(url_site + "/api/join-words/" + catId, {
+            fetch(url_site + "/api/join-words/" + parseInt(catId), {
                 headers: {
                     'token': token
                 }
