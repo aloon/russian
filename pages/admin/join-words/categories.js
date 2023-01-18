@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import Login from '../../login'
 import { url_site } from '../../../lib/constants';
 import Back from '../../../lib/back';
+import { Layout } from '../../../lib/layout';
 
 const ContentCategory = () => {
 
@@ -79,15 +80,9 @@ const ContentCategory = () => {
 
 export default function AdminCategories() {
     return (
-        <div>
-            <main>
-                <div className='p-2'>
-                    <Back href={"/admin"} />
-                    <ContentCategory />
-                </div>
-            </main>
-            <footer>
-            </footer>
-        </div>
+        <Layout>
+            <Back href={"/admin"} />
+            <ContentCategory />
+        </Layout>
     )
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import Login from './login'
 import PrettyList from '../lib/prettyList'
+import { Layout } from '../lib/layout';
 
 const Home = () => {
 
@@ -18,7 +19,7 @@ const Home = () => {
     items.push({ href: "/admin", text: "Admin" })
   }
 
-  return (token == null) ? <Login /> : <PrettyList items={items} />
+  return (token == null) ? <Login /> : <Layout><PrettyList items={items} /></Layout>
 }
 
 

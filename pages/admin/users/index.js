@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Login from '../../login'
 import Back from '../../../lib/back';
 import { url_site } from '../../../lib/constants';
+import { Layout } from '../../../lib/layout';
 
 const Users = () => {
 
@@ -98,16 +99,10 @@ const UsersAdmin = () => {
 
 
   return (token == null) ? <Login /> : (
-    <div>
-      <main>
-        <div className='p-2'>
-          <Back href={"/admin"} />
-          <Users />
-        </div>
-      </main>
-      <footer>
-      </footer>
-    </div>
+    <Layout>
+      <Back href={"/admin"} />
+      <Users />
+    </Layout>
   )
 }
 
