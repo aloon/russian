@@ -115,16 +115,6 @@ const Game = (props) => {
         return oPos;
     }
 
-    function otherPosSameCol(col) {
-        let oPos = -1;
-        status[col].forEach((item, i) => {
-            if (item.status == JoinWordsStatus.Pre) {
-                oPos = i;
-            }
-        });
-        return oPos;
-    }
-
     function isOk(col, pos) {
         const otherCol = (col == 0) ? 1 : 0;
         let otherPos = -1;
@@ -137,14 +127,6 @@ const Game = (props) => {
     }
 
     function handleClick(col, item, pos) {
-        /* 
-        - ningun elemento seleccionado en ninguna columna -> seleccionano pre
-        - click un elemento seleccionado con pre -> deseleccionar
-        - un elemento seleccionado como pre en otra columna
-            - si es el mismo -> ok
-            - si es diferente -> nok
-        */
-
         //const status = structuredClone(status);
         if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
