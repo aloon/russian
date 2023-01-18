@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Login from '../login'
 import Back from '../../lib/back';
 import PrettyList from '../../lib/prettyList'
+import { Layout } from '../../lib/layout';
 
 const HomeAdmin = () => {
 
@@ -16,16 +17,12 @@ const HomeAdmin = () => {
     { href: "/admin/users/", text: "Users" }
   ]
 
-  return (token == null) ? <Login /> : <div>
-  <main>
-      <div className='p-2'>
+  return (token == null) ? <Login /> :
+    <Layout>
       <Back href={"/"} />
       <PrettyList items={items} />
-      </div>
-  </main>
-  <footer>
-  </footer>
-</div>
+    </Layout>
+
 }
 
 export default HomeAdmin

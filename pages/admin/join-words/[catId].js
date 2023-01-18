@@ -3,6 +3,7 @@ import Title from './title';
 import { useRouter } from 'next/router'
 import { url_site } from '../../../lib/constants';
 import Back from '../../../lib/back';
+import { Layout } from '../../../lib/layout';
 
 export async function getServerSideProps(context) {
     const { catId } = context.params;
@@ -105,16 +106,10 @@ export default function JoinWordsAdmin() {
     const router = useRouter()
     const { catId } = router.query
     return (
-        <div>
-            <main>
-                <div className='p-2'>
-                    <Back href={"/admin/join-words/categories"} />
-                    <Title catId={catId} />
-                    <JoinWords catId={catId} />
-                </div>
-            </main>
-            <footer>
-            </footer>
-        </div>
+        <Layout>
+            <Back href={"/admin/join-words/categories"} />
+            <Title catId={catId} />
+            <JoinWords catId={catId} />
+        </Layout>
     )
 }

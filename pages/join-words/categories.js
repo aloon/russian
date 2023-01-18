@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { url_site } from '../../lib/constants';
 import Back from '../../lib/back';
 import Login from '../login'
+import { Layout } from '../../lib/layout';
 
 const JoinWordsCategories = () => {
 
@@ -26,12 +27,12 @@ const JoinWordsCategories = () => {
         return (<Login />)
     else {
         const list = categories.map((category) => {
-            return {href: "/join-words/" + category.id, text: category.word}
+            return { href: "/join-words/" + category.id, text: category.word }
         });
         return (
             <ul className="list-group">
                 {categories.map((category) => (
-                    <Link href={"/join-words/" + category.id} key={"c" + category.id} style={{textDecoration: 'none'}}><li className="list-group-item text-center" key={"l" + category.id}>{category.word}</li></Link>
+                    <Link href={"/join-words/" + category.id} key={"c" + category.id} style={{ textDecoration: 'none' }}><li className="list-group-item text-center" key={"l" + category.id}>{category.word}</li></Link>
                 ))}
             </ul>
         );
@@ -42,16 +43,10 @@ const JoinWordsCategories = () => {
 export default function IndexJoinWords() {
 
     return (
-        <div>
-            <main>
-                <div className='p-2'>
-                <Back href={"/"} />
-                <JoinWordsCategories />
-                </div>
-            </main>
-            <footer>
-            </footer>
-        </div>
+        <Layout>
+            <Back href={"/"} />
+            <JoinWordsCategories />
+        </Layout>
     )
 }
 
