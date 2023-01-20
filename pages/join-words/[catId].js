@@ -52,14 +52,13 @@ class WordElement extends React.Component {
 const Game = (props) => {
 
     const [status, setStatus] = useState([[], []]);
-    const [catId, setCatId] = useState(props.catId);
     const [childrenRefs, setChildrenRefs] = useState([[], []]);
     const [token, setToken] = useState(null);
 
     useEffect(() => {
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
         if (token != null) {
-            fetch(url_site + "/api/join-words/" + parseInt(catId), {
+            fetch(url_site + "/api/join-words/" + parseInt(props.catId), {
                 headers: {
                     'token': token
                 }

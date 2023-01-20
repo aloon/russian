@@ -16,6 +16,7 @@ const Home = () => {
 
   const items = [{ href: "/join-words/categories", text: "Join Words" }]
   if (userTypeId == 1) {
+    items.push({ href: "/conjugate", text: "Match conjugations" })
     items.push({ href: "/admin", text: "Admin" })
   }
 
