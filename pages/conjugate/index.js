@@ -11,9 +11,11 @@ const Option = (props) => {
     let clazz = "btn btn-secondary m-2"
     const [status, setStatus] = useState(eStatus.Unknow);
 
-    const select = () => {
+    const handleClick = () => {
         setStatus(props.good ? eStatus.Ok : eStatus.Ko)
+        props.onClick()
     }
+
     switch (status) {
         case eStatus.Ok:
             clazz = "btn btn-success m-2"
@@ -25,7 +27,7 @@ const Option = (props) => {
             clazz = "btn btn-secondary m-2"
             break;
     }
-    return (<button className={clazz} onClick={() => select()}>{props.option}</button>)
+    return (<button className={clazz} onClick={handleClick}>{props.option}</button>)
 }
 
 const Conjugate = () => {
@@ -34,11 +36,11 @@ const Conjugate = () => {
     const [sentence, setSentence] = useState('');
     const [options, setOptions] = useState([]);
     const [goodOption, setGoodOption] = useState('');
+    const [childrenRefs, setChildrenRefs] = useState([]);
     const blank = "____________"
     const keyBlank = "XXX"
     const random = () => (Math.random() > 0.5) ? 1 : -1
     const printSentence = (sentence) => sentence.replace(keyBlank, blank)
-
 
     useEffect(() => {
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
@@ -50,9 +52,16 @@ const Conjugate = () => {
                     setOptions(data.options)
                     setGoodOption(data.options[0])
                     setSentence(data.sentence)
+                   // setChildrenRefs(data.options.map((e) => React.createRef()))
                 })
         }
     }, [token])
+
+    function handleClick(pos) {
+        setSentence(sentence.replace(keyBlank, goodOption))
+        //childrenRefs[pos].current.setStatus(eStatus.Ok)
+        console.log(childrenRefs)
+    }
 
     if (token == null)
         return (<Login />)
@@ -62,7 +71,11 @@ const Conjugate = () => {
             <div className="card-body">
                 <h5 className="card-title">{printSentence(sentence)}</h5>
                 {
-                    options.sort(random).map((o, i) => <Option key={i} option={o} good={o === goodOption} />)
+                    options.sort(random).map((o, i) => <Option
+                        key={i} option={o} good={o === goodOption}
+                        ref={childrenRefs[i]}
+                        onClick={() => handleClick(i)}
+                    />)
                 }
             </div>
         </div>);
@@ -70,9 +83,12 @@ const Conjugate = () => {
 }
 
 export default function IndexConjugate() {
+    const [seed, setSeed] = useState(1);
+    const reload = () => setSeed(Math.random())
     return (
         <Layout>
             <Back href={"/"} />
+            
             <Conjugate />
         </Layout>
     )

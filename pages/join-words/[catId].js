@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import { useRouter } from 'next/router'
 import { JoinWordsStatus, url_site } from '../../lib/constants';
@@ -127,6 +126,7 @@ const Game = (props) => {
 
     function handleClick(col, pos) {
         //const status = structuredClone(status);
+        console.log(childrenRefs)
         if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
             if (!anySelectedElement()) {
@@ -152,7 +152,7 @@ const Game = (props) => {
             {[0, 1].map((col) => {
                 return <div className="d-grid gap-3 col" key={"c" + col}>
                     {status[col].map((item, pos) => <WordElement word={item}
-                        key={"c" + col + "i" + item.id}
+                        key={col + "_" + item.id}
                         ref={childrenRefs[col][pos]}
                         onClick={() => handleClick(col, pos)} />
                     )}
