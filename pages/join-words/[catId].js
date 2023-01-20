@@ -125,7 +125,7 @@ const Game = (props) => {
         return status[col][pos].id == status[otherCol][otherPos].id;
     }
 
-    function handleClick(col, item, pos) {
+    function handleClick(col, pos) {
         //const status = structuredClone(status);
         if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
@@ -154,7 +154,7 @@ const Game = (props) => {
                     {status[col].map((item, pos) => <WordElement word={item}
                         key={"c" + col + "i" + item.id}
                         ref={childrenRefs[col][pos]}
-                        onClick={() => handleClick(col, item, pos)} />
+                        onClick={() => handleClick(col, pos)} />
                     )}
                 </div>
             })}
@@ -166,10 +166,7 @@ export default function JoinWords() {
     const router = useRouter()
     const { catId } = router.query
     const [seed, setSeed] = useState(1);
-
-    const reload = () => {
-        setSeed(Math.random());
-    }
+    const reload = () => setSeed(Math.random())
 
     return (
         <div>

@@ -54,8 +54,6 @@ const Conjugate = () => {
         }
     }, [token])
 
-    const isGood = (option) => option === goodOption
-
     if (token == null)
         return (<Login />)
     else {
@@ -64,7 +62,7 @@ const Conjugate = () => {
             <div className="card-body">
                 <h5 className="card-title">{printSentence(sentence)}</h5>
                 {
-                    options.sort(random).map((o, i) => <Option key={i} option={o} good={isGood(o)} />)
+                    options.sort(random).map((o, i) => <Option key={i} option={o} good={o === goodOption} />)
                 }
             </div>
         </div>);
