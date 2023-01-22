@@ -14,7 +14,7 @@ const ConjugateAdmin = () => {
 
   return (token == null) ? <Login /> :
     <Layout>
-      <Back href={"/"} />
+      <Back href={"/admin"} />
       WIP
     </Layout>
 
