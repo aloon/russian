@@ -60,8 +60,12 @@ const Conjugate = (props) => {
         }
     }, [token])
 
-    function handleClick(pos) {
+    function handleClick() {
         setSentence(sentence.replace(keyBlank, goodOption))
+        childrenRefs.forEach((e) => {
+            if (e.current.state.isGood)
+                e.current.setState({ status: eStatus.Ok })
+        })
         //childrenRefs[pos].current.setState({ status: eStatus.Ok })
     }
 
@@ -76,7 +80,7 @@ const Conjugate = (props) => {
                     options.sort(random).map((o, i) => <Option
                         key={i} option={o} good={o === goodOption}
                         ref={childrenRefs[i]}
-                        onClick={() => handleClick(i)}
+                        onClick={() => handleClick()}
                     />)
                 }
             </div>
