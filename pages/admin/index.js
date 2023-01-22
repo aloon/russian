@@ -14,6 +14,7 @@ const HomeAdmin = () => {
 
   const items = [
     { href: "/admin/join-words/categories", text: "Categories in join words" },
+    { href: "/admin/conjugate/", text: "Match conjugations" },
     { href: "/admin/users/", text: "Users" }
   ]
 
