@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
     setUserTypeId(localStorage.getItem("userTypeId") || sessionStorage.getItem("userTypeId"));
-  }, [])
+  }, [token])
 
   const items = [{ href: "/join-words/categories", text: "Join Words" }]
   if (userTypeId == 1) {

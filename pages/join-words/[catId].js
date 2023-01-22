@@ -58,18 +58,12 @@ const Game = (props) => {
     useEffect(() => {
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
         if (token != null) {
-            fetch(url_site + "/api/join-words/" + parseInt(props.catId), {
-                headers: {
-                    'token': token
-                }
-            })
-                .then((res) => res.json())
-                .then((data) => data.map((col) => col
+            fetch(url_site + "/api/join-words/" + parseInt(props.catId), { headers: { 'token': token } })
+                .then(res => res.json())
+                .then(data => data.map(col => col
                     .sort(() => (Math.random() > 0.5) ? 1 : -1)
-                    .map((item) => {
-                        return { id: item.id, word: item.word, status: JoinWordsStatus.Unchecked }
-                    }))
-                ).then(function (data) {
+                    .map(item => ({ id: item.id, word: item.word, status: JoinWordsStatus.Unchecked })                    ))
+                ).then(data => {
                     setStatus(data);
                     setChildrenRefs(data.map((c) => c.map((e) => React.createRef())))
                 });

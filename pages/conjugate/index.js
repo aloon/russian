@@ -7,30 +7,33 @@ import { Layout } from '../../lib/layout';
 
 const eStatus = { Unknow: 0, Ok: 1, Ko: 2 }
 
-const Option = (props) => {
-    let clazz = "btn btn-secondary m-2"
-    const [status, setStatus] = useState(eStatus.Unknow);
-
-    const handleClick = () => {
-        setStatus(props.good ? eStatus.Ok : eStatus.Ko)
-        props.onClick()
+class Option extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            status: eStatus.Unknow,
+            option: props.option,
+            isGood: props.good
+        };
     }
 
-    switch (status) {
-        case eStatus.Ok:
-            clazz = "btn btn-success m-2"
-            break;
-        case eStatus.Ko:
-            clazz = "btn btn-danger m-2"
-            break;
-        case eStatus.Unchecked:
-            clazz = "btn btn-secondary m-2"
-            break;
+    handleClick = () => {
+        this.setState({ status: this.state.isGood ? eStatus.Ok : eStatus.Ko });
+        this.props.onClick()
     }
-    return (<button className={clazz} onClick={handleClick}>{props.option}</button>)
+
+    clazz() {
+        if (this.state.status === eStatus.Ok) return "btn btn-success m-2"
+        if (this.state.status === eStatus.Ko) return "btn btn-danger m-2"
+        return "btn btn-secondary m-2"
+    }
+
+    render() {
+        return (<button className={this.clazz()} onClick={this.handleClick}>{this.state.option}</button>)
+    }
 }
 
-const Conjugate = () => {
+const Conjugate = (props) => {
     const [token, setToken] = useState(null);
     const [verb, setVerb] = useState('');
     const [sentence, setSentence] = useState('');
@@ -45,22 +48,21 @@ const Conjugate = () => {
     useEffect(() => {
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
         if (token != null) {
-            fetch(`${url_site}/api/conjugate/1`)
+            fetch(`${url_site}/api/conjugate/1`, { headers: { 'token': token } })
                 .then(res => res.json())
                 .then(data => {
                     setVerb(data.verb)
                     setOptions(data.options)
                     setGoodOption(data.options[0])
                     setSentence(data.sentence)
-                   // setChildrenRefs(data.options.map((e) => React.createRef()))
+                    setChildrenRefs(data.options.map((e) => React.createRef()))
                 })
         }
     }, [token])
 
     function handleClick(pos) {
         setSentence(sentence.replace(keyBlank, goodOption))
-        //childrenRefs[pos].current.setStatus(eStatus.Ok)
-        console.log(childrenRefs)
+        //childrenRefs[pos].current.setState({ status: eStatus.Ok })
     }
 
     if (token == null)
@@ -88,7 +90,6 @@ export default function IndexConjugate() {
     return (
         <Layout>
             <Back href={"/"} />
-            
             <Conjugate />
         </Layout>
     )
