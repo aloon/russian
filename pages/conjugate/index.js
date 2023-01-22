@@ -66,7 +66,6 @@ const Conjugate = (props) => {
             if (e.current.state.isGood)
                 e.current.setState({ status: eStatus.Ok })
         })
-        //childrenRefs[pos].current.setState({ status: eStatus.Ok })
     }
 
     if (token == null)
