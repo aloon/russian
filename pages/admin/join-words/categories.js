@@ -56,6 +56,7 @@ const ContentCategory = () => {
                         <th scope="col">#</th>
                         <th scope="col">Category name</th>
                         <th scope="col">Number of words</th>
+                        <th scope="col">Active</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,6 +66,7 @@ const ContentCategory = () => {
                                 <th scope="row" key={"th" + i}>{i + 1}</th>
                                 <td><Link href={"/admin/join-words/" + c.id}>{c.word}</Link></td>
                                 <td>{c.counts}</td>
+                                <td>{c.active ? "Yes" : "No"}</td>
                             </tr>
                         })}
                     <tr>
