@@ -16,6 +16,9 @@ order by c.id `;
             if (req.method == "POST") {
                 const query = `insert into categories (name) values ($1)`;
                 return conn.query(query, [req.body.word])
+            } else if (req.method == "PUT") {
+                const query = `update categories set active=$1 where id=$2`;
+                return conn.query(query, [req.body.active ? 1 : 0, req.body.catId])
             }
             return Promise.resolve();
         }).then(() => conn.query(queryAllCats))
