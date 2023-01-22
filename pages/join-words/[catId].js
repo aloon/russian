@@ -121,7 +121,6 @@ const Game = (props) => {
 
     function handleClick(col, pos) {
         //const status = structuredClone(status);
-        console.log(childrenRefs)
         if ([JoinWordsStatus.Unchecked, JoinWordsStatus.Pre].includes(status[col][pos].status)) {
             const otherCol = (col == 0) ? 1 : 0;
             if (!anySelectedElement()) {
