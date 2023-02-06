@@ -71,7 +71,7 @@ const InsertConjugate = (props) => {
   </thead>
   <tbody>
     {conjugates.map((conjugate, index) => 
-    <tr>
+    <tr key={index}>
       <th scope="row">{index+1}</th>
       <td>{conjugate.verb}</td>
       <td>{conjugate.sentence}</td>
