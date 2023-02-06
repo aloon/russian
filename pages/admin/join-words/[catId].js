@@ -30,7 +30,6 @@ const JoinWords = (props) => {
     }, [token]);
 
     function add(e) {
-        const _this = this;
         if (e.key === "Enter") {
             e.preventDefault();
             fetch(url_site + '/api/admin/join-words?cat=' + props.catId, {
@@ -43,13 +42,13 @@ const JoinWords = (props) => {
                     word1: document.getElementById('word1').value,
                     word2: document.getElementById('word2').value
                 })
-            }).then(function (response) {
-                return response.json();
-            }).then(function (data) {
-                setWords(data)
-                document.getElementById('word1').value = "";
-                document.getElementById('word2').value = "";
-            });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setWords(data)
+                    document.getElementById('word1').value = "";
+                    document.getElementById('word2').value = "";
+                });
         }
     }
 

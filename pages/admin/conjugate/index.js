@@ -2,24 +2,51 @@ import React, { useState, useEffect } from 'react';
 import Login from '../../login'
 import Back from '../../../lib/back';
 import { Layout } from '../../../lib/layout';
+import { url_site } from '../../../lib/constants';
 
 const InsertConjugate = (props) => {
 
-  //const [conjugate, setConjugate] = useState({ verb: '', sentense: '', options: [] });
+  const [conjugates, setConjugates] = useState([]);
+  const { token } = props;
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(event.target);
+
+  const add = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      const conjugate = {
+        verb: document.getElementById('verb').value,
+        sentence: document.getElementById('sentence').value,
+        choices: document.getElementById('choices').value.split(',').map(item => item.trim())
+      }
+
+      fetch(url_site + '/api/admin/conjugate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'token': token
+        },
+        body: JSON.stringify(conjugate)
+      })
+        .then(response => response.json())
+        .then(data => {
+          setConjugates(data)
+          document.getElementById('verb').value = "";
+          document.getElementById('sentence').value = "";
+          document.getElementById('choices').value = "";
+        })
+    }
   }
 
 
-  return <form>
-  <div className='form-group row'>
-    <label htmlFor='verb' className='col-sm-2 col-form-label'>Verb</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="verb" placeholder="ex: Cocinar" required />
+  return <>
+  <form>
+    <div className='form-group row'>
+      <label htmlFor='verb' className='col-sm-2 col-form-label'>Verb</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="verb" placeholder="ex: Cocinar" required />
+      </div>
     </div>
-  </div>
     <div className='form-group row'>
       <label htmlFor='sentence' className='col-sm-2 col-form-label'>Sentence</label>
       <div class="col-sm-10">
@@ -27,18 +54,35 @@ const InsertConjugate = (props) => {
       </div>
     </div>
     <div className='form-group row'>
-    <label htmlFor='sentence' className='col-sm-2 col-form-label'>Options</label>
+      <label htmlFor='sentence' className='col-sm-2 col-form-label'>Choices</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="options" placeholder="ex: cocinan, cocinamos, cocino, berenjena" required />
+        <input type="text" class="form-control" id="choices" placeholder="ex: cocinan, cocinamos, cocino, berenjena" required onKeyUp={(e) => add(e)} />
       </div>
     </div>
   </form>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Verb</th>
+      <th scope="col">Sentence</th>
+      <th scope="col">Choices</th>
+    </tr>
+  </thead>
+  <tbody>
+    {conjugates.map((conjugate, index) => 
+    <tr>
+      <th scope="row">{index+1}</th>
+      <td>{conjugate.verb}</td>
+      <td>{conjugate.sentence}</td>
+      <td>{conjugate.choices.join(', ')}</td>
+    </tr>
+    )}
+  </tbody>
+</table>
+  </>
 }
 
-const ListConjugate = (props) => {
-  const [conjugates, setConjugates] = useState([]);
-  return <div>ListConjugate</div>
-}
 
 const ConjugateAdmin = () => {
 
@@ -53,7 +97,6 @@ const ConjugateAdmin = () => {
     <Layout>
       <Back href={"/admin"} />
       <InsertConjugate token={token} />
-      <ListConjugate token={token} />
     </Layout>
 
 }

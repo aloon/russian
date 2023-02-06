@@ -37,7 +37,7 @@ const Conjugate = (props) => {
     const [token, setToken] = useState(null);
     const [verb, setVerb] = useState('');
     const [sentence, setSentence] = useState('');
-    const [options, setOptions] = useState([]);
+    const [choices, setChoices] = useState([]);
     const [goodOption, setGoodOption] = useState('');
     const [childrenRefs, setChildrenRefs] = useState([]);
     const blank = "____________"
@@ -46,16 +46,18 @@ const Conjugate = (props) => {
     const printSentence = (sentence) => sentence.replace(keyBlank, blank)
 
     useEffect(() => {
+        console.log("useEffect")
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
         if (token != null) {
+            console.log(choices)
             fetch(`${url_site}/api/conjugate/1`, { headers: { 'token': token } })
                 .then(res => res.json())
                 .then(data => {
                     setVerb(data.verb)
-                    setOptions(data.options)
-                    setGoodOption(data.options[0])
+                    setChoices(data.choices)
+                    setGoodOption(data.choices[0])
                     setSentence(data.sentence)
-                    setChildrenRefs(data.options.map((e) => React.createRef()))
+                    setChildrenRefs(data.choices.map((e) => React.createRef()))
                 })
         }
     }, [token])
@@ -75,8 +77,8 @@ const Conjugate = (props) => {
             <div className="card-header">{verb}</div>
             <div className="card-body">
                 <h5 className="card-title">{printSentence(sentence)}</h5>
-                {
-                    options.sort(random).map((o, i) => <Option
+                {                    
+                    choices.sort(random).map((o, i) => <Option
                         key={i} option={o} good={o === goodOption}
                         ref={childrenRefs[i]}
                         onClick={() => handleClick()}
