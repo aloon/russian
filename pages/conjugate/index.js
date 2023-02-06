@@ -46,10 +46,8 @@ const Conjugate = (props) => {
     const printSentence = (sentence) => sentence.replace(keyBlank, blank)
 
     useEffect(() => {
-        console.log("useEffect")
         setToken(localStorage.getItem("token") || sessionStorage.getItem("token"));
         if (token != null) {
-            console.log(choices)
             fetch(`${url_site}/api/conjugate/1`, { headers: { 'token': token } })
                 .then(res => res.json())
                 .then(data => {

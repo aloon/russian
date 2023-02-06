@@ -4,11 +4,26 @@ import Back from '../../../lib/back';
 import { Layout } from '../../../lib/layout';
 import { url_site } from '../../../lib/constants';
 
+let exec=false;
+
 const InsertConjugate = (props) => {
 
   const [conjugates, setConjugates] = useState([]);
   const { token } = props;
+ 
 
+  useEffect(() => {
+    if(exec) return;
+    exec=true;
+    fetch(url_site + '/api/admin/conjugate', {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': token
+      }
+    })
+      .then(response => response.json())
+      .then(data => setConjugates(data))
+  }, [conjugates])
 
   const add = (e) => {
     if (e.key === "Enter") {
@@ -43,24 +58,24 @@ const InsertConjugate = (props) => {
   <form>
     <div className='form-group row'>
       <label htmlFor='verb' className='col-sm-2 col-form-label'>Verb</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="verb" placeholder="ex: Cocinar" required />
+      <div className="col-sm-10">
+        <input type="text" className="form-control" id="verb" placeholder="ex: Cocinar" required />
       </div>
     </div>
     <div className='form-group row'>
       <label htmlFor='sentence' className='col-sm-2 col-form-label'>Sentence</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="sentence" placeholder="ex: Ellos XXX muy bien" required />
+      <div className="col-sm-10">
+        <input type="text" className="form-control" id="sentence" placeholder="ex: Ellos XXX muy bien" required />
       </div>
     </div>
     <div className='form-group row'>
       <label htmlFor='sentence' className='col-sm-2 col-form-label'>Choices</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="choices" placeholder="ex: cocinan, cocinamos, cocino, berenjena" required onKeyUp={(e) => add(e)} />
+      <div className="col-sm-10">
+        <input type="text" className="form-control" id="choices" placeholder="ex: cocinan, cocinamos, cocino, berenjena" required onKeyUp={(e) => add(e)} />
       </div>
     </div>
   </form>
-  <table class="table">
+  <table className="table">
   <thead>
     <tr>
       <th scope="col">#</th>
