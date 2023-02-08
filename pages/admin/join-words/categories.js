@@ -78,7 +78,7 @@ const ContentCategory = () => {
                 <tbody>
                     {
                         categories.map((c, i) => {
-                            return <tr key={i}>
+                            return <tr key={c.id}>
                                 <th>{i + 1}</th>
                                 <td><Link href={"/admin/join-words/" + c.id}>{c.word}</Link></td>
                                 <td>{c.counts}</td>

@@ -77,7 +77,7 @@ const Conjugate = (props) => {
                 <h5 className="card-title">{printSentence(sentence)}</h5>
                 {                    
                     choices.sort(random).map((o, i) => <Option
-                        key={i} option={o} good={o === goodOption}
+                        key={o} option={o} good={o === goodOption}
                         ref={childrenRefs[i]}
                         onClick={() => handleClick()}
                     />)

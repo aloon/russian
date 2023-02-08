@@ -42,7 +42,7 @@ export default function handler(req, res) {
                             return;
                         }
 
-                        const sqls = conn.query(`select * from sql_migrations where procesed = false order by name`, (err, result) => {
+                        conn.query(`select * from sql_migrations where procesed = false order by name`, (err, result) => {
                             result.rows.forEach((row) => {
                                 conn.query(row.sql, (err, result) => {
                                     if (err) {

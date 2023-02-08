@@ -53,7 +53,6 @@ const JoinWords = (props) => {
     }
 
     function remove(id) {
-        const _this = this;
         fetch(url_site + '/api/admin/join-words?id=' + id + "&cat=" + props.catId, {
             method: 'DELETE',
             headers: {
@@ -80,8 +79,8 @@ const JoinWords = (props) => {
             <tbody>
                 {
                     words.map((c, i) => {
-                        return <tr key={"t" + i}>
-                            <th scope="row" key={"th" + i}>{i + 1}</th>
+                        return <tr key={"t" + c.word1}>
+                            <th scope="row" key={"th" + c.word1}>{i + 1}</th>
                             <td>{c.word1}</td>
                             <td>{c.word2}</td>
                             <td><button onClick={() => remove(c.id)}>Delete</button></td>

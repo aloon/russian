@@ -69,8 +69,8 @@ const Users = () => {
       <tbody>
         {
           users.map((c, i) => {
-            return <tr key={"t" + i}>
-              <th scope="row" key={"th" + i}>{i + 1}</th>
+            return <tr key={"t" + c.id}>
+              <th scope="row" key={"th" + c.id}>{i + 1}</th>
               <td>{c.email}</td>
               <td><button onClick={() => remove(c.id)}>Delete</button></td>
             </tr>

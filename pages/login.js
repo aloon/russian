@@ -13,7 +13,6 @@ const Login = () => {
             password: document.getElementById("pass").value
         }
         const remember = document.getElementById("remember").checked;
-        const _this = this;
         fetch(url_site + '/api/login', {
             method: 'POST',
             headers: new Headers({
